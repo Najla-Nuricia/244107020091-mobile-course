@@ -1,0 +1,11 @@
+02-week-2-declarative-ui-responsive-design/responsive_dashboard/*
+!02-week-2-declarative-ui-responsive-design/responsive_dashboard/lib/
+!02-week-2-declarative-ui-responsive-design/responsive_dashboard/lib/**
+!02-week-2-declarative-ui-responsive-design/responsive_dashboard/test/
+!02-week-2-declarative-ui-responsive-design/responsive_dashboard/test/**
+
+02-week-2-declarative-ui-responsive-design/layout_sederhana/*
+!02-week-2-declarative-ui-responsive-design/layout_sederhana/lib/
+!02-week-2-declarative-ui-responsive-design/layout_sederhana/lib/**
+!02-week-2-declarative-ui-responsive-design/layout_sederhana/test/
+!02-week-2-declarative-ui-responsive-design/layout_sederhana/test/**

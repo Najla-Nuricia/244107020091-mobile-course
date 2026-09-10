@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/todo_provider.dart';
-import '../providers/todo_tile.dart';
-import '../providers/todo_filter_provider.dart';
+import 'todo_provider.dart';
+import 'todo_tile.dart';
+import 'todo_filter_provider.dart';
 
 class TodoPage extends ConsumerWidget {
   const TodoPage({super.key});

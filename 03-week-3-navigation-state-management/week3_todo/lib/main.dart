@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'providers/todo_page.dart';
+import 'router/app_router.dart';
 
 void main() {
   runApp(
@@ -16,13 +16,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Week 3 - ToDo',
       theme: ThemeData(
         colorSchemeSeed: Colors.teal,
         useMaterial3: true,
       ),
-      home: const TodoPage(),
+      routerConfig: router,
     );
   }
 }

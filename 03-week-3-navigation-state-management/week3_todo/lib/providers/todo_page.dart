@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/todo_provider.dart';
 import '../providers/todo_tile.dart';
+import '../providers/todo_filter_provider.dart';
 
 class TodoPage extends ConsumerWidget {
   const TodoPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todos = ref.watch(todoListProvider);
+    final todos = ref.watch(unfinishedTodosProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('ToDo Riverpod')),
@@ -20,10 +21,17 @@ class TodoPage extends ConsumerWidget {
               =>TodoTile(
                 todo: todos[index],
                 onToggle: () {
-                  ref.read(todoListProvider.notifier).toggle(index);
+                  //ambil semua todo asli
+                  final allTodos = ref.read(todoListProvider);
+                  //cari todo yang di klik ada di index berapa
+                  final todoIndex = allTodos.indexOf(todos[index]);
+                  //toggle
+                  ref.read(todoListProvider.notifier).toggle(todoIndex);
                 },
                 onDelete: () {
-                  ref.read(todoListProvider.notifier).remove(index);
+                  final allTodos = ref.read(todoListProvider);
+                  final todoIndex = allTodos.indexOf(todos[index]);
+                  ref.read(todoListProvider.notifier).remove(todoIndex);
                 },
               ),
             ),

@@ -9,3 +9,16 @@
 !02-week-2-declarative-ui-responsive-design/layout_sederhana/lib/**
 !02-week-2-declarative-ui-responsive-design/layout_sederhana/test/
 !02-week-2-declarative-ui-responsive-design/layout_sederhana/test/**
+
+03-week-3-navigation-state-management/week3_navigation/*
+!03-week-3-navigation-state-management/week3_navigation/lib/
+!03-week-3-navigation-state-management/week3_navigation/lib/**
+!03-week-3-navigation-state-management/week3_navigation/test/
+!03-week-3-navigation-state-management/week3_navigation/test/**
+
+
+03-week-3-navigation-state-management/week3_todo/*
+!03-week-3-navigation-state-management/week3_todo/lib/
+!03-week-3-navigation-state-management/week3_todo/lib/**
+!03-week-3-navigation-state-management/week3_todo/test/
+!03-week-3-navigation-state-management/week3_todo/test/**

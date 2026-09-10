@@ -60,6 +60,8 @@ class TodoPage extends ConsumerWidget {
                 ref
                     .read(todoListProvider.notifier)
                     .add(controller.text.trim());
+                    //mengosongkan kotak input
+                    controller.clear();
               }
               Navigator.pop(context);
             },

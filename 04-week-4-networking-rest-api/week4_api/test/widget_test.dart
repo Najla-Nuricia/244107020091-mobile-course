@@ -2,12 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:week4_api/main.dart';
-import 'package:week4_api/data/models/post.dart';
-import 'package:week4_api/data/providers.dart';
+import 'package:week4_api/data/paged_post.dart';
 
-class _TestPostListNotifier extends PostListNotifier {
+class _TestPagedPostsNotifier extends PagedPostsNotifier {
   @override
-  Future<List<Post>> build() async => const [];
+  PagedPostsState build() => const PagedPostsState();
 }
 
 void main() {
@@ -15,13 +14,13 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          postListProvider.overrideWith(_TestPostListNotifier.new),
+          pagedPostsProvider.overrideWith(_TestPagedPostsNotifier.new),
         ],
         child: const MyApp(),
       ),
     );
     await tester.pump();
 
-    expect(find.text('Posts API'), findsOneWidget);
+    expect(find.text('Posts Paged'), findsOneWidget);
   });
 }

@@ -14,16 +14,8 @@ class PostTile extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       leading: CircleAvatar(child: Text(post.id.toString())),
-      title: Text(
-        post.title,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      subtitle: Text(
-        post.body,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-      ),
+      title: Text(post.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+      subtitle: Text(post.body, maxLines: 2, overflow: TextOverflow.ellipsis),
       trailing: const Icon(Icons.chevron_right),
     );
   }

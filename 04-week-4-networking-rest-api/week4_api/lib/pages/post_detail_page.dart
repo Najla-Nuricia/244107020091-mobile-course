@@ -37,10 +37,7 @@ class PostDetailPage extends ConsumerWidget {
         data: (post) => ListView(
           padding: const EdgeInsets.all(24),
           children: [
-            Text(
-              post.title,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
+            Text(post.title, style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 16),
             Text(post.body, style: Theme.of(context).textTheme.bodyLarge),
           ],

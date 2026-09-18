@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import '../data/paged_post.dart';
 import '../data/network_errors.dart';
 import '../widgets/post_tile.dart';
@@ -9,12 +10,10 @@ class PagedPostPage extends ConsumerStatefulWidget {
   const PagedPostPage({super.key});
 
   @override
-  ConsumerState<PagedPostPage> createState() =>
-      _PagedPostPageState();
+  ConsumerState<PagedPostPage> createState() => _PagedPostPageState();
 }
 
-class _PagedPostPageState
-    extends ConsumerState<PagedPostPage> {
+class _PagedPostPageState extends ConsumerState<PagedPostPage> {
   final _controller = ScrollController();
 
   @override
@@ -37,6 +36,12 @@ class _PagedPostPageState
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(pagedPostsProvider);
+    if (state.isLoading && state.items.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(title: Text('Posts Paged')),
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
     if (state.error != null && state.items.isEmpty) {
       return Scaffold(
         appBar: AppBar(title: const Text('Posts Paged')),
@@ -47,14 +52,19 @@ class _PagedPostPageState
               Text(friendlyErrorMessage(state.error!)),
               const SizedBox(height: 12),
               FilledButton(
-                onPressed: () => ref
-                    .read(pagedPostsProvider.notifier)
-                    .loadFirstPage(),
+                onPressed: () =>
+                    ref.read(pagedPostsProvider.notifier).loadFirstPage(),
                 child: const Text('Coba lagi'),
               ),
             ],
           ),
         ),
+      );
+    }
+    if (state.items.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Posts Paged')),
+        body: const Center(child: Text('Belum ada data dari server.')),
       );
     }
     return Scaffold(
@@ -64,11 +74,20 @@ class _PagedPostPageState
         itemCount: state.items.length + 1,
         itemBuilder: (context, index) {
           if (index == state.items.length) {
+            if (state.error != null) {
+              return ListTile(
+                title: Text(friendlyErrorMessage(state.error!)),
+                trailing: IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () =>
+                      ref.read(pagedPostsProvider.notifier).loadNextPage(),
+                ),
+              );
+            }
             if (!state.hasMore) {
               return const Padding(
                 padding: EdgeInsets.all(16),
-                child:
-                    Center(child: Text('Semua data termuat.')),
+                child: Center(child: Text('Semua data termuat.')),
               );
             }
             return const Padding(

@@ -6,6 +6,9 @@ final prefsRepositoryProvider = Provider((ref) => PrefsRepository());
 final darkModeProvider = AsyncNotifierProvider<DarkModeNotifier, bool>(
   DarkModeNotifier.new,
 );
+final lastOpenedProvider = FutureProvider<String?>((ref) {
+  return ref.watch(prefsRepositoryProvider).getLastOpened();
+});
 
 class DarkModeNotifier extends AsyncNotifier<bool> {
   @override

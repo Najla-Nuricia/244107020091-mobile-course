@@ -49,6 +49,25 @@ class NoteRepository {
     await db.delete('notes', where: 'id = ?', whereArgs: [id]);
   }
 
+  Future<void> updateNote({
+    required int id,
+    required String title,
+    required String body,
+  }) async {
+    final db = await _openDb();
+    await db.update(
+      'notes',
+      {
+        'title': title,
+        'body': body,
+        'updated_at': DateTime.now().toIso8601String(),
+        'dirty': 1,
+      },
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
   Future<int> countDirty() async {
     final db = await _openDb();
     final rows = await db.rawQuery(

@@ -17,7 +17,17 @@ class NoteDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final note = ref.watch(noteDetailProvider(noteId));
     return Scaffold(
-      appBar: AppBar(title: const Text('Detail catatan')),
+      appBar: AppBar(
+        title: const Text('Detail catatan'),
+        actions: [
+          if (note.value != null)
+            IconButton(
+              tooltip: 'Edit catatan',
+              icon: const Icon(Icons.edit_outlined),
+              onPressed: () => _editNote(context, ref, note.value!),
+            ),
+        ],
+      ),
       body: note.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, _) =>
@@ -27,6 +37,65 @@ class NoteDetailPage extends ConsumerWidget {
             : _NoteDetail(note: value),
       ),
     );
+  }
+
+  Future<void> _editNote(BuildContext context, WidgetRef ref, Note note) async {
+    final title = TextEditingController(text: note.title);
+    final body = TextEditingController(text: note.body);
+    final formKey = GlobalKey<FormState>();
+    final saved = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Edit catatan'),
+        content: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: title,
+                decoration: const InputDecoration(labelText: 'Judul'),
+                validator: (value) => value == null || value.trim().isEmpty
+                    ? 'Judul wajib diisi'
+                    : null,
+              ),
+              TextField(
+                controller: body,
+                maxLines: 4,
+                decoration: const InputDecoration(labelText: 'Isi catatan'),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Batal'),
+          ),
+          FilledButton(
+            onPressed: () async {
+              if (!formKey.currentState!.validate()) return;
+              await ref
+                  .read(noteRepositoryProvider)
+                  .updateNote(
+                    id: note.id!,
+                    title: title.text.trim(),
+                    body: body.text.trim(),
+                  );
+              if (context.mounted) Navigator.pop(context, true);
+            },
+            child: const Text('Simpan'),
+          ),
+        ],
+      ),
+    );
+    title.dispose();
+    body.dispose();
+    if (saved == true) {
+      ref.invalidate(noteDetailProvider(note.id!));
+      ref.invalidate(notesProvider);
+      ref.invalidate(dirtyNotesCountProvider);
+    }
   }
 }
 

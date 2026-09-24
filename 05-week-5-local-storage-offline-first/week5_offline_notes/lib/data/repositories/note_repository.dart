@@ -1,10 +1,11 @@
 import 'package:sqflite/sqflite.dart';
+
 import '../local/db.dart';
 import '../local/note.dart';
 
 class NoteRepository {
   NoteRepository({Future<Database> Function()? openDb})
-      : _openDb = openDb ?? openNotesDb;
+    : _openDb = openDb ?? openNotesDb;
 
   final Future<Database> Function() _openDb;
 
@@ -12,6 +13,17 @@ class NoteRepository {
     final db = await _openDb();
     final rows = await db.query('notes', orderBy: 'updated_at DESC');
     return rows.map(Note.fromMap).toList();
+  }
+
+  Future<Note?> fetchNoteById(int id) async {
+    final db = await _openDb();
+    final rows = await db.query(
+      'notes',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+    return rows.isEmpty ? null : Note.fromMap(rows.first);
   }
 
   Future<Note> addNote({required String title, String body = ''}) async {
@@ -40,7 +52,8 @@ class NoteRepository {
   Future<int> countDirty() async {
     final db = await _openDb();
     final rows = await db.rawQuery(
-        'SELECT COUNT(*) AS c FROM notes WHERE dirty = 1');
+      'SELECT COUNT(*) AS c FROM notes WHERE dirty = 1',
+    );
     return ((rows.first['c'] as num?)?.toInt() ?? 0);
   }
 

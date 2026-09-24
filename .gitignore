@@ -28,3 +28,9 @@
 !04-week-4-networking-rest-api/week4_api/lib/**
 !04-week-4-networking-rest-api/week4_api/test/
 !04-week-4-networking-rest-api/week4_api/test/**
+
+05-week-5-local-storage-offline-first/week5_offline_notes/*
+!05-week-5-local-storage-offline-first/week5_offline_notes/lib/
+!05-week-5-local-storage-offline-first/week5_offline_notes/lib/**
+!05-week-5-local-storage-offline-first/week5_offline_notes/test/
+!05-week-5-local-storage-offline-first/week5_offline_notes/test/**

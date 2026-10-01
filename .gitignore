@@ -34,3 +34,9 @@
 !05-week-5-local-storage-offline-first/week5_offline_notes/lib/**
 !05-week-5-local-storage-offline-first/week5_offline_notes/test/
 !05-week-5-local-storage-offline-first/week5_offline_notes/test/**
+
+06-week-6-authentication-security-fcm/campus_notify/*
+!06-week-6-authentication-security-fcm/campus_notify/lib/
+!06-week-6-authentication-security-fcm/campus_notify/lib/**
+!06-week-6-authentication-security-fcm/campus_notify/test/
+!06-week-6-authentication-security-fcm/campus_notify/test/**

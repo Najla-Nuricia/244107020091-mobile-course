@@ -1,20 +1,24 @@
+import 'dart:async';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'messaging/push_service.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  registerBackgroundHandler();
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 final router = GoRouter(
   routes: [
-    GoRoute(
-      path: '/login',
-      builder: (context, state) => const LoginPage(),
-    ),
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const HomePage(),
-    ),
+    GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
+    GoRoute(path: '/', builder: (context, state) => const HomePage()),
     GoRoute(
       path: '/pengumuman/:id',
       builder: (context, state) {
@@ -26,15 +30,30 @@ final router = GoRouter(
   ],
 );
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      unawaited(
+        ref.read(pushServiceProvider).initialize(navigate: router.go).then(
+          (_) => ref.read(pushServiceProvider).subscribeToAnnouncements(),
+        ),
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Hadirin',
-      routerConfig: router,
-    );
+    return MaterialApp.router(title: 'Hadirin', routerConfig: router);
   }
 }
 
@@ -43,22 +62,64 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Login'),
-      ),
-    );
+    return const Scaffold(body: Center(child: Text('Login')));
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String _tokenPreview = 'Memuat token...';
+  late final _tokenRefreshSubscription = FirebaseMessaging
+      .instance
+      .onTokenRefresh
+      .listen(_showTokenPreview);
+
+  @override
+  void initState() {
+    super.initState();
+    _loadToken();
+  }
+
+  Future<void> _loadToken() async {
+    try {
+      final token = await FirebaseMessaging.instance.getToken();
+      if (mounted && token != null) _showTokenPreview(token);
+    } catch (_) {
+      if (mounted) setState(() => _tokenPreview = 'Token tidak tersedia');
+    }
+  }
+
+  void _showTokenPreview(String token) {
+    if (!mounted) return;
+    setState(() {
+      _tokenPreview = token.length > 12 ? token.substring(0, 12) : 'Tersedia';
+    });
+  }
+
+  @override
+  void dispose() {
+    _tokenRefreshSubscription.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('Home'),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Home'),
+            const SizedBox(height: 8),
+            Text('Token FCM: $_tokenPreview'),
+          ],
+        ),
       ),
     );
   }
@@ -67,17 +128,10 @@ class HomePage extends StatelessWidget {
 class AnnouncementPage extends StatelessWidget {
   final String id;
 
-  const AnnouncementPage({
-    super.key,
-    required this.id,
-  });
+  const AnnouncementPage({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Announcement ID: $id'),
-      ),
-    );
+    return Scaffold(body: Center(child: Text('Announcement ID: $id')));
   }
 }

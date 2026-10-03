@@ -151,7 +151,7 @@ class PushService {
   }
 
   String _routeFromData(Map<String, dynamic> data) {
-    return AppRoutes.fromNotificationData(data);
+    return routeFromMessage(data);
   }
 
   Future<void> subscribeToAnnouncements() =>

@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'messaging/push_service.dart';
+import 'routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,10 +18,16 @@ Future<void> main() async {
 
 final router = GoRouter(
   routes: [
-    GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
-    GoRoute(path: '/', builder: (context, state) => const HomePage()),
     GoRoute(
-      path: '/pengumuman/:id',
+      path: AppRoutes.login,
+      builder: (context, state) => const LoginPage(),
+    ),
+    GoRoute(
+      path: AppRoutes.home,
+      builder: (context, state) => const HomePage(),
+    ),
+    GoRoute(
+      path: AppRoutes.announcementPath,
       builder: (context, state) {
         final id = state.pathParameters['id'] ?? '';
 

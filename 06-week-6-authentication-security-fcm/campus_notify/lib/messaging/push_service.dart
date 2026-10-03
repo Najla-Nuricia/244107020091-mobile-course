@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/api_client.dart';
 import '../providers/auth_provider.dart';
+import '../routes.dart';
 
 final pushServiceProvider = Provider<PushService>((ref) {
   final dio = buildApiClient(
@@ -150,8 +151,7 @@ class PushService {
   }
 
   String _routeFromData(Map<String, dynamic> data) {
-    final route = data['route'];
-    return route is String && route.startsWith('/') ? route : '/';
+    return AppRoutes.fromNotificationData(data);
   }
 
   Future<void> subscribeToAnnouncements() =>

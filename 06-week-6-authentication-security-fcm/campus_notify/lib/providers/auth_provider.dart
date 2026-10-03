@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/api_errors.dart';
 import '../data/auth_repository.dart';
 import '../data/token_store.dart';
 
@@ -21,15 +23,19 @@ class AuthNotifier extends AsyncNotifier<bool> {
 
   Future<void> login(String email, String password) async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
+    try {
       final session = await ref
           .read(authRepositoryProvider)
           .login(email: email, password: password);
       await ref
           .read(tokenStoreProvider)
           .save(access: session.access, refresh: session.refresh);
-      return true;
-    });
+      state = const AsyncData(true);
+    } on DioException catch (error, stackTrace) {
+      state = AsyncError<bool>(apiErrorMessage(error), stackTrace);
+    } catch (_, stackTrace) {
+      state = AsyncError<bool>('Tidak dapat masuk. Coba lagi.', stackTrace);
+    }
   }
 
   Future<void> logout() async {

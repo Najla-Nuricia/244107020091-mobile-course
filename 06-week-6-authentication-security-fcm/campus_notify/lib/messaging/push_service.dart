@@ -8,6 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/api_client.dart';
+import '../data/api_errors.dart';
 import '../providers/auth_provider.dart';
 import '../routes.dart';
 
@@ -121,9 +122,7 @@ class PushService {
     try {
       await _dio.post<void>('/devices', data: {'token': token});
     } on DioException catch (error) {
-      debugPrint(
-        'FCM device registration failed (HTTP ${error.response?.statusCode ?? 'network error'}).',
-      );
+      debugPrint('FCM device registration failed: ${apiErrorMessage(error)}');
     }
   }
 

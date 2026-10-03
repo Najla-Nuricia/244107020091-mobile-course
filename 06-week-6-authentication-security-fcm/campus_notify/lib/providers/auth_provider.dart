@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/api_errors.dart';
@@ -14,11 +15,26 @@ final authStateProvider = AsyncNotifierProvider<AuthNotifier, bool>(
   AuthNotifier.new,
 );
 
+class AuthRouterRefresh extends ChangeNotifier {
+  void refresh() => notifyListeners();
+}
+
+final authRouterRefreshProvider = Provider<AuthRouterRefresh>((ref) {
+  final refresh = AuthRouterRefresh();
+  ref.listen(authStateProvider, (previous, next) => refresh.refresh());
+  ref.onDispose(refresh.dispose);
+  return refresh;
+});
+
 class AuthNotifier extends AsyncNotifier<bool> {
   @override
   Future<bool> build() async {
-    final token = await ref.watch(tokenStoreProvider).readAccess();
-    return token != null;
+    try {
+      final token = await ref.watch(tokenStoreProvider).readAccess();
+      return token != null && token.isNotEmpty;
+    } catch (_) {
+      return false;
+    }
   }
 
   Future<void> login(String email, String password) async {
@@ -40,6 +56,6 @@ class AuthNotifier extends AsyncNotifier<bool> {
 
   Future<void> logout() async {
     await ref.read(tokenStoreProvider).clear();
-    ref.invalidateSelf();
+    state = const AsyncData(false);
   }
 }

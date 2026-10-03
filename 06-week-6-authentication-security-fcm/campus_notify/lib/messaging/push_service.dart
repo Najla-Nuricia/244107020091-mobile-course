@@ -16,6 +16,7 @@ final pushServiceProvider = Provider<PushService>((ref) {
   final dio = buildApiClient(
     ref.watch(tokenStoreProvider),
     ref.watch(authRepositoryProvider),
+    onSessionExpired: () => ref.read(authStateProvider.notifier).logout(),
   );
   final service = PushService(dio: dio);
   ref.onDispose(service.dispose);

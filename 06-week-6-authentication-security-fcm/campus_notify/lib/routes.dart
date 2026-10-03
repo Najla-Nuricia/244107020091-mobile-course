@@ -23,3 +23,38 @@ String routeFromMessage(Map<String, dynamic> data) {
 
   return AppRoutes.home;
 }
+
+String? authRouteRedirect({
+  required bool isAuthenticated,
+  required bool isLoading,
+  required Uri uri,
+}) {
+  if (isLoading) {
+    if (uri.path == AppRoutes.login) return null;
+    return _loginLocation(uri);
+  }
+
+  if (!isAuthenticated && uri.path != AppRoutes.login) {
+    return _loginLocation(uri);
+  }
+
+  if (isAuthenticated && uri.path == AppRoutes.login) {
+    final returnPath = uri.queryParameters['from'];
+    if (returnPath != null &&
+        returnPath.startsWith('/') &&
+        !returnPath.startsWith('//')) {
+      return returnPath;
+    }
+    return AppRoutes.home;
+  }
+
+  return null;
+}
+
+String _loginLocation(Uri uri) {
+  final returnPath = uri.toString() == AppRoutes.home ? null : uri.toString();
+  return Uri(
+    path: AppRoutes.login,
+    queryParameters: returnPath == null ? null : {'from': returnPath},
+  ).toString();
+}

@@ -44,9 +44,12 @@ class _MyAppState extends ConsumerState<MyApp> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       unawaited(
-        ref.read(pushServiceProvider).initialize(navigate: router.go).then(
-          (_) => ref.read(pushServiceProvider).subscribeToAnnouncements(),
-        ),
+        ref
+            .read(pushServiceProvider)
+            .initialize(navigate: router.go)
+            .then(
+              (_) => ref.read(pushServiceProvider).subscribeToAnnouncements(),
+            ),
       );
     });
   }

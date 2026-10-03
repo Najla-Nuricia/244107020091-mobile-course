@@ -25,9 +25,9 @@ class PushService {
     required this._dio,
     FirebaseMessaging? messaging,
     FlutterLocalNotificationsPlugin? localNotifications,
-  })  : _messaging = messaging ?? FirebaseMessaging.instance,
-        _localNotifications =
-            localNotifications ?? FlutterLocalNotificationsPlugin();
+  }) : _messaging = messaging ?? FirebaseMessaging.instance,
+       _localNotifications =
+           localNotifications ?? FlutterLocalNotificationsPlugin();
 
   static const _topic = 'pengumuman-kampus';
   static const _channel = AndroidNotificationChannel(
@@ -66,16 +66,20 @@ class PushService {
     return settings.authorizationStatus;
   }
 
-  Future<void> initialize({required void Function(String route) navigate}) async {
+  Future<void> initialize({
+    required void Function(String route) navigate,
+  }) async {
     if (_initialized) return;
     _navigate = navigate;
 
     await requestPermission();
     await _initializeLocalNotifications();
-    _foregroundSubscription =
-      FirebaseMessaging.onMessage.listen(_showForeground);
-    _openedSubscription =
-      FirebaseMessaging.onMessageOpenedApp.listen(_navigateMessage);
+    _foregroundSubscription = FirebaseMessaging.onMessage.listen(
+      _showForeground,
+    );
+    _openedSubscription = FirebaseMessaging.onMessageOpenedApp.listen(
+      _navigateMessage,
+    );
     _tokenSubscription = _messaging.onTokenRefresh.listen((token) {
       unawaited(_registerDevice(token));
     });
@@ -91,7 +95,8 @@ class PushService {
   Future<void> _initializeLocalNotifications() async {
     await _localNotifications
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin
+        >()
         ?.createNotificationChannel(_channel);
 
     await _localNotifications.initialize(
@@ -107,6 +112,11 @@ class PushService {
   }
 
   Future<void> _registerDevice(String token) async {
+    if (_dio.options.baseUrl.isEmpty) {
+      debugPrint('FCM device registration skipped: API_BASE_URL is not set.');
+      return;
+    }
+
     try {
       await _dio.post<void>('/devices', data: {'token': token});
     } on DioException catch (error) {

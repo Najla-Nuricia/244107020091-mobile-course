@@ -40,3 +40,5 @@
 !06-week-6-authentication-security-fcm/campus_notify/lib/**
 !06-week-6-authentication-security-fcm/campus_notify/test/
 !06-week-6-authentication-security-fcm/campus_notify/test/**
+06-week-6-authentication-security-fcm/campus_notify/lib/firebase_options.dart
+06-week-6-authentication-security-fcm/campus_notify/android/app/google-services.json

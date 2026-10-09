@@ -1,11 +1,12 @@
 # Week 7 — Clean Architecture
 
-Nama: Najla Nuricia Laudy  
-Kelas: TI-3F  
-NIM: 244107020091
+**Nama:** Najla Nuricia Laudy
+**Kelas:** TI-3F
+**NIM:** 244107020091
 
-Refactor Week 7 diterapkan pada proyek `campus_notify` di folder ini dengan
-memisahkan kode berdasarkan fitur dan layer.
+## Tujuan
+
+Praktikum ini bertujuan merapikan proyek Flutter `campus_notify` dari Minggu 5/6 menggunakan Clean Architecture. Materi mencakup prinsip SOLID, separation of concerns, struktur feature-first dan layer-first, serta pemisahan presentation, domain, dan data.
 
 ## Struktur Proyek
 
@@ -13,56 +14,108 @@ memisahkan kode berdasarkan fitur dan layer.
 campus_notify/lib/
 ├── core/
 │   ├── failures.dart
-│   ├── providers.dart
 │   └── network/
 │       ├── api_client.dart
 │       └── api_errors.dart
 ├── features/
 │   ├── auth/
 │   │   ├── domain/
-│   │   │   ├── entities/auth_session.dart
-│   │   │   ├── failures/auth_failure.dart
-│   │   │   └── repositories/
-│   │   │       ├── auth_repository.dart
-│   │   │       └── session_store.dart
 │   │   ├── data/
-│   │   │   ├── datasources/token_store.dart
-│   │   │   └── repositories/auth_repository_impl.dart
 │   │   └── presentation/
-│   │       ├── pages/login_page.dart
-│   │       └── providers/auth_providers.dart
 │   ├── announcements/
-│   │   └── presentation/pages/
-│   │       ├── announcement_page.dart
-│   │       └── home_page.dart
+│   │   ├── domain/
+│   │   ├── data/
+│   │   └── presentation/
 │   └── notifications/
-│       ├── data/push_service.dart
-│       └── presentation/providers/notification_providers.dart
+│       ├── data/
+│       └── presentation/
 ├── main.dart
 └── routes.dart
 ```
 
-## Pembagian Tanggung Jawab
+## Prinsip Clean Architecture
 
-- `domain` mendefinisikan entitas dan interface repository. Domain tidak
-  bergantung pada Flutter, Dio, maupun secure storage.
-- `data` mengimplementasikan repository, penyimpanan token, akses API, dan
-  integrasi Firebase.
-- `presentation` berisi halaman dan provider/notifier fitur. Halaman tidak
-  mengakses Firebase, Dio, atau secure storage langsung.
-- `core` berisi failure bersama, provider lintas fitur, serta utilitas jaringan.
-- `routes.dart` mendaftarkan halaman fitur dan menjaga helper route/deep link.
+Clean Architecture membagi aplikasi menjadi tiga layer:
 
-## Hasil Pemeriksaan Pelanggaran
+* **Presentation:** Mengatur tampilan dan interaksi pengguna.
+* **Domain:** Menyimpan aturan bisnis, entity, kontrak repository, dan use case.
+* **Data:** Mengelola API, penyimpanan, model, dan implementasi repository.
 
-`lib/pages` dan `lib/widgets` bukan struktur yang digunakan lagi. Pencarian
-akses langsung dari widget dapat diarahkan ke `lib/features/**/presentation`:
+Dependensi mengarah ke dalam. Domain tidak bergantung pada UI atau teknologi penyimpanan. Repository menghubungkan kebutuhan domain dengan sumber data, use case menjalankan suatu tindakan aplikasi, dan dependency injection menyediakan implementasi yang dibutuhkan melalui Riverpod.
 
-| Pemeriksaan | Hasil |
-| --- | --- |
-| `Dio(`, `http.`, `openDatabase`, `SharedPreferences.getInstance`, `FlutterSecureStorage` di presentation | Tidak ditemukan |
-| `DateFormat`, `jsonDecode`, `.toIso8601String` di presentation | Tidak ditemukan |
-| Instansiasi repository atau `Dio(BaseOptions` di halaman | Tidak ditemukan; wiring repository ada di provider auth dan Dio di `core/network` |
+Entity merepresentasikan konsep bisnis, sedangkan model menangani bentuk data dan proses konversinya. Pemisahan ini membantu menerapkan SOLID dan separation of concerns agar kode lebih mudah diuji dan dirawat.
 
-Token FCM yang ditampilkan di `HomePage` kini dibaca melalui service dan
-`deviceTokenProvider`; widget hanya merender state provider.
+## SOLID dan Separation of Concerns
+
+| Prinsip               | Penerapan                                                           |
+| --------------------- | ------------------------------------------------------------------- |
+| Single Responsibility | Setiap bagian memiliki tugas masing-masing.                         |
+| Open/Closed           | Implementasi repository dapat diganti tanpa mengubah use case.      |
+| Liskov Substitution   | Repository palsu dapat digunakan untuk pengujian sesuai kontraknya. |
+| Interface Segregation | Kontrak repository hanya menyediakan operasi yang dibutuhkan.       |
+| Dependency Inversion  | Domain bergantung pada kontrak, bukan implementasi teknis.          |
+
+Separation of concerns memisahkan tampilan, aturan bisnis, dan akses data agar perubahan pada satu bagian tidak banyak memengaruhi bagian lainnya.
+
+## Feature-First vs Layer-First
+
+| Feature-first                                                        | Layer-first                                                                       |
+| -------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Kode dikelompokkan berdasarkan fitur, lalu dipisahkan menjadi layer. | Kode dikelompokkan berdasarkan jenis layer secara global.                         |
+| Perubahan fitur lebih terlokalisasi dan mudah dikembangkan.          | Sederhana untuk aplikasi kecil, tetapi kode satu fitur tersebar di banyak folder. |
+| Cocok untuk proyek dengan banyak fitur.                              | Cocok untuk proyek sederhana.                                                     |
+
+Proyek ini menggunakan feature-first karena memiliki fitur auth, announcements, dan notifications.
+
+## Hasil Refactor
+
+* Memisahkan kode berdasarkan fitur dan layer.
+* Memisahkan kontrak repository dari implementasinya.
+* Memindahkan mapping data ke model.
+* Menggunakan Riverpod untuk dependency injection.
+* Menguji use case announcements menggunakan repository palsu tanpa database atau jaringan sungguhan.
+
+## Fitur Utama
+
+* **Auth:** Login dan pengelolaan sesi.
+* **Announcements:** Menampilkan detail pengumuman melalui route `/pengumuman/3`.
+* **Notifications:** Integrasi Firebase Messaging.
+
+## Stack Teknologi
+
+* Flutter dan Dart
+* Riverpod
+* GoRouter
+* Dio
+* Flutter Secure Storage
+* Firebase Messaging
+* Flutter Test
+
+## Cara Menjalankan
+
+Jalankan perintah berikut dari folder proyek:
+
+```sh
+flutter pub get
+flutter run
+```
+
+Untuk menjalankan pengujian use case:
+
+```sh
+flutter test test/features/announcements/domain/usecases/get_announcement_by_id_test.dart
+```
+
+Konfigurasi Firebase harus tersedia sebelum menjalankan aplikasi.
+
+## Hasil Pengujian
+
+Pengujian use case menggunakan repository palsu berhasil dengan **2 test lulus**, mencakup skenario sukses dan kegagalan. Route `/pengumuman/3` tetap menampilkan detail dengan ID `3`.
+
+Pemeriksaan juga dilakukan untuk memastikan domain tidak mengimpor dependensi teknis, mapping data berada di layer data, dan halaman presentation tidak mengakses jaringan atau penyimpanan secara langsung.
+
+## Screenshot Sebelum dan Sesudah
+
+| Sebelum refactor                                                                     | Sesudah refactor                                                                    |
+| ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| ![Halaman announcement sebelum refactor](screenshots/announcement-detail-before.png) | ![Halaman announcement sesudah refactor](screenshots/announcement-detail-after.png) |

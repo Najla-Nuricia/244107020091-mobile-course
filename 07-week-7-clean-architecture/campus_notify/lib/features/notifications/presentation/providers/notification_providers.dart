@@ -2,8 +2,19 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/providers.dart';
+import '../../../../core/network/api_client.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../data/push_service.dart';
+
+final apiClientProvider = Provider((ref) {
+  final client = buildApiClient(
+    ref.watch(sessionStoreProvider),
+    ref.watch(authRepositoryProvider),
+    onSessionExpired: () => ref.read(authStateProvider.notifier).logout(),
+  );
+  ref.onDispose(() => client.close(force: true));
+  return client;
+});
 
 final pushServiceProvider = Provider<PushService>((ref) {
   final service = PushService(dio: ref.watch(apiClientProvider));

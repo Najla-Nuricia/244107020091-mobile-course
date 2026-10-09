@@ -1,33 +1,68 @@
 # Week 7 — Clean Architecture
 
-Nama: Najla Nuricia Laudy
-Kelas: TI-3F
+Nama: Najla Nuricia Laudy  
+Kelas: TI-3F  
 NIM: 244107020091
 
-Audit ini menggunakan proyek Minggu 6, yaitu `06-week-6-authentication-security-fcm/campus_notify`.
+Refactor Week 7 diterapkan pada proyek `campus_notify` di folder ini dengan
+memisahkan kode berdasarkan fitur dan layer.
 
-## Pemetaan Layer Saat Ini
+## Struktur Proyek
 
-| File                               | Layer                     | Masalah / Catatan                                                                                               |
-| ---------------------------------- | ------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `lib/main.dart`                    | Presentation + routing    | Beberapa halaman masih digabung dalam satu file. Akses Firebase di `HomePage` sebaiknya dipindahkan ke service. |
-| `lib/providers/auth_provider.dart` | Presentation              | Provider masih bergantung pada error Dio. Sebaiknya error diolah agar tidak bergantung langsung pada Dio.       |
-| `lib/data/auth_repository.dart`    | Data                      | `AuthSession` dan `AuthRepository` masih satu file. Repository juga masih berupa simulasi.                      |
-| `lib/data/api_client.dart`         | Data                      | Pengaturan Dio sudah berada di tempat yang sesuai.                                                              |
-| `lib/data/token_store.dart`        | Data                      | Kontrak `SessionStore` masih digabung dengan implementasinya. Sebaiknya dipisahkan.                             |
-| `lib/messaging/push_service.dart`  | Data / integrasi Firebase | Mengurus notifikasi dan token perangkat. Sebaiknya dipisahkan dari halaman.                                     |
-| `lib/routes.dart`                  | Routing                   | Pengaturan rute bisa dipisahkan agar struktur kode lebih rapi.                                                  |
+```text
+campus_notify/lib/
+├── core/
+│   ├── failures.dart
+│   ├── providers.dart
+│   └── network/
+│       ├── api_client.dart
+│       └── api_errors.dart
+├── features/
+│   ├── auth/
+│   │   ├── domain/
+│   │   │   ├── entities/auth_session.dart
+│   │   │   ├── failures/auth_failure.dart
+│   │   │   └── repositories/
+│   │   │       ├── auth_repository.dart
+│   │   │       └── session_store.dart
+│   │   ├── data/
+│   │   │   ├── datasources/token_store.dart
+│   │   │   └── repositories/auth_repository_impl.dart
+│   │   └── presentation/
+│   │       ├── pages/login_page.dart
+│   │       └── providers/auth_providers.dart
+│   ├── announcements/
+│   │   └── presentation/pages/
+│   │       ├── announcement_page.dart
+│   │       └── home_page.dart
+│   └── notifications/
+│       ├── data/push_service.dart
+│       └── presentation/providers/notification_providers.dart
+├── main.dart
+└── routes.dart
+```
 
-## Tiga Pelanggaran Klasik
+## Pembagian Tanggung Jawab
 
-Folder `lib/pages` dan `lib/widgets` belum tersedia, jadi pemeriksaan dilakukan pada folder `lib/`.
+- `domain` mendefinisikan entitas dan interface repository. Domain tidak
+  bergantung pada Flutter, Dio, maupun secure storage.
+- `data` mengimplementasikan repository, penyimpanan token, akses API, dan
+  integrasi Firebase.
+- `presentation` berisi halaman dan provider/notifier fitur. Halaman tidak
+  mengakses Firebase, Dio, atau secure storage langsung.
+- `core` berisi failure bersama, provider lintas fitur, serta utilitas jaringan.
+- `routes.dart` mendaftarkan halaman fitur dan menjaga helper route/deep link.
 
-| Pemeriksaan                                      | Hasil                     | Catatan                                                                                  |
-| ------------------------------------------------ | ------------------------- | ---------------------------------------------------------------------------------------- |
-| Akses jaringan, database, atau storage di widget | Tidak ditemukan           | Namun, `HomePage` masih mengakses Firebase Messaging secara langsung.                    |
-| Format tanggal atau parsing JSON di widget       | Tidak ditemukan           | Tidak ada perbaikan khusus untuk bagian ini.                                             |
-| Instansiasi repository atau Dio di presentation  | Tidak ditemukan di widget | `AuthRepository()` dibuat melalui provider Riverpod, sedangkan Dio dibuat di layer data. |
+## Hasil Pemeriksaan Pelanggaran
 
-## Kesimpulan
+`lib/pages` dan `lib/widgets` bukan struktur yang digunakan lagi. Pencarian
+akses langsung dari widget dapat diarahkan ke `lib/features/**/presentation`:
 
-Struktur proyek sudah cukup terpisah, tetapi beberapa halaman masih digabung dan akses Firebase masih dilakukan langsung di halaman. Refactor selanjutnya adalah memisahkan halaman, kontrak repository, dan akses Firebase agar kode lebih rapi dan mudah dikembangkan.
+| Pemeriksaan | Hasil |
+| --- | --- |
+| `Dio(`, `http.`, `openDatabase`, `SharedPreferences.getInstance`, `FlutterSecureStorage` di presentation | Tidak ditemukan |
+| `DateFormat`, `jsonDecode`, `.toIso8601String` di presentation | Tidak ditemukan |
+| Instansiasi repository atau `Dio(BaseOptions` di halaman | Tidak ditemukan; wiring repository ada di provider auth dan Dio di `core/network` |
+
+Token FCM yang ditampilkan di `HomePage` kini dibaca melalui service dan
+`deviceTokenProvider`; widget hanya merender state provider.

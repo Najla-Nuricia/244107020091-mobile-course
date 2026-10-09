@@ -42,3 +42,11 @@
 !06-week-6-authentication-security-fcm/campus_notify/test/**
 06-week-6-authentication-security-fcm/campus_notify/lib/firebase_options.dart
 06-week-6-authentication-security-fcm/campus_notify/android/app/google-services.json
+
+07-week-7-clean-architecture/campus_notify/*
+!07-week-7-clean-architecture/campus_notify/lib/
+!07-week-7-clean-architecture/campus_notify/lib/**
+!07-week-7-clean-architecture/campus_notify/test/
+!07-week-7-clean-architecture/campus_notify/test/**
+07-week-7-clean-architecture/campus_notify/lib/firebase_options.dart
+07-week-7-clean-architecture/campus_notify/android/app/google-services.json

@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:week5_offline_notes/data/local/note.dart';
 import 'package:week5_offline_notes/data/providers.dart';
+import 'package:week5_offline_notes/data/repositories/note_repository.dart';
 
 import 'fake_note_repository.dart';
 
@@ -42,5 +43,21 @@ void main() {
   test('provider error dengan repository palsu', () async {
     final repository = FakeNoteRepository(throwError: true);
     await expectLater(repository.fetchNotes(), throwsA(isA<Exception>()));
+  });
+
+  test('menolak judul kosong sebelum membuka database', () async {
+    var databaseOpened = false;
+    final repository = NoteRepository(
+      openDb: () async {
+        databaseOpened = true;
+        throw UnimplementedError();
+      },
+    );
+
+    await expectLater(
+      repository.addNote(title: '   '),
+      throwsA(isA<ArgumentError>()),
+    );
+    expect(databaseOpened, isFalse);
   });
 }

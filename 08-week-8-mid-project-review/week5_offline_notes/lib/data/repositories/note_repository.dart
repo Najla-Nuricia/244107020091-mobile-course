@@ -27,9 +27,14 @@ class NoteRepository {
   }
 
   Future<Note> addNote({required String title, String body = ''}) async {
+    final normalizedTitle = title.trim();
+    if (normalizedTitle.isEmpty) {
+      throw ArgumentError.value(title, 'title', 'Judul wajib diisi');
+    }
+
     final db = await _openDb();
     final note = Note(
-      title: title,
+      title: normalizedTitle,
       body: body,
       updatedAt: DateTime.now(),
       dirty: true,

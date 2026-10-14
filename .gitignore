@@ -50,3 +50,9 @@
 !07-week-7-clean-architecture/campus_notify/test/**
 07-week-7-clean-architecture/campus_notify/lib/firebase_options.dart
 07-week-7-clean-architecture/campus_notify/android/app/google-services.json
+
+08-week-8-mid-project-review/week5_offline_notes/*
+!08-week-8-mid-project-review/week5_offline_notes/lib/
+!08-week-8-mid-project-review/week5_offline_notes/lib/**
+!08-week-8-mid-project-review/week5_offline_notes/test/
+!08-week-8-mid-project-review/week5_offline_notes/test/**

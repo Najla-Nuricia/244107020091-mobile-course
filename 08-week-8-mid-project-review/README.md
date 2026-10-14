@@ -76,17 +76,8 @@ CI repository juga menjalankan analyzer, formatter, dan test untuk perubahan
 yang menyentuh project Week 8 melalui
 [week8-ci.yml](../../.github/workflows/week8-ci.yml).
 
-## Status Issue dan Pull Request
+## Screenshot
 
-Perubahan Week 8 disiapkan sebagai satu unit review yang kecil dan terukur.
-Issue dan Pull Request GitHub perlu dibuat/ditautkan saat pekerjaan kolaboratif
-dilakukan; dokumentasi ini tidak mengklaim issue atau PR yang belum dibuat.
+![PR](screenshots/pr1.png)
+![PR](screenshots/pr2.png)
 
-| Item | Status |
-| --- | --- |
-| Audit riwayat dan working tree | Selesai |
-| `flutter analyze` | Lulus |
-| `flutter test` | Lulus, 5 test |
-| Dokumentasi review AI | Selesai |
-| Issue + PR sejawat | Menunggu dibuat di GitHub |
-| Screenshot manual | Menunggu pengambilan dari emulator |

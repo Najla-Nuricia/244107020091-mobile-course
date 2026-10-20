@@ -56,3 +56,10 @@
 !08-week-8-mid-project-review/week5_offline_notes/lib/**
 !08-week-8-mid-project-review/week5_offline_notes/test/
 !08-week-8-mid-project-review/week5_offline_notes/test/**
+
+# Week 9: keep only source and tests
+09-week-9-ai-assisted-development/week5_offline_notes/*
+!09-week-9-ai-assisted-development/week5_offline_notes/lib/
+!09-week-9-ai-assisted-development/week5_offline_notes/lib/**
+!09-week-9-ai-assisted-development/week5_offline_notes/test/
+!09-week-9-ai-assisted-development/week5_offline_notes/test/**

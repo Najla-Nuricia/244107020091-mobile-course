@@ -23,8 +23,8 @@ Validasi dijalankan dari folder `week5_offline_notes`:
 | Prompt injection atau jawaban tidak akurat | Keputusan pengguna keliru | Batasi penggunaan untuk bantuan belajar, tampilkan respons sebagai teks yang perlu diverifikasi, dan gunakan system prompt yang eksplisit |
 | Pemakaian API berlebihan | Biaya tidak terkendali | Gunakan model ringan, kirim pertanyaan seperlunya, pantau kuota provider, dan tambahkan batas penggunaan sebelum produksi |
 
-![hasil](screenshots/ai.png)
 ![hasil](screenshots/ai1.png)
+![hasil](screenshots/ai2.jpg)
 
 ### Refleksi
 

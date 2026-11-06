@@ -1,5 +1,12 @@
 # Minggu 11 - Performance Optimization
 
+**Nama:** Najla Nuricia Laudy
+
+**Kelas:** TI-3F
+
+**NIM:** 244107020091
+
+
 Project praktikum:
 [`week5_offline_notes`](./week5_offline_notes/).
 
@@ -21,4 +28,4 @@ Optimasi yang diterapkan:
 
 ## Validasi
 
-- [test](./test.png)
+- ![test](./test.png)

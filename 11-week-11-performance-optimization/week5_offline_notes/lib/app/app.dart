@@ -24,7 +24,9 @@ class OfflineNotesApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final darkMode = ref.watch(darkModeProvider);
+    final isDarkMode = ref.watch(
+      darkModeProvider.select((value) => value.value == true),
+    );
     return MaterialApp.router(
       title: 'Offline Notes',
       theme: ThemeData(
@@ -38,7 +40,7 @@ class OfflineNotesApp extends ConsumerWidget {
         ),
         useMaterial3: true,
       ),
-      themeMode: darkMode.value == true ? ThemeMode.dark : ThemeMode.light,
+      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
       routerConfig: buildRouter(home: const NotesPage()),
     );
   }
@@ -51,9 +53,16 @@ class NotesPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final notes = ref.watch(notesProvider);
     final searchQuery = ref.watch(notesSearchQueryProvider);
-    final dirtyCount = ref.watch(dirtyNotesCountProvider).value ?? 0;
+    final dirtyCount = ref.watch(
+      dirtyNotesCountProvider.select((value) => value.value ?? 0),
+    );
     final posts = ref.watch(postsProvider);
-    final lastOpened = ref.watch(lastOpenedProvider).value;
+    final lastOpened = ref.watch(
+      lastOpenedProvider.select((value) => value.value),
+    );
+    final isDarkMode = ref.watch(
+      darkModeProvider.select((value) => value.value == true),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +76,7 @@ class NotesPage extends ConsumerWidget {
           IconButton(
             tooltip: 'Toggle tema',
             icon: Icon(
-              ref.watch(darkModeProvider).value == true
+              isDarkMode
                   ? Icons.light_mode_outlined
                   : Icons.dark_mode_outlined,
             ),
@@ -126,19 +135,10 @@ class NotesPage extends ConsumerWidget {
                             ? 'Belum ada catatan.'
                             : 'Tidak ada catatan yang cocok.',
                       )
-                    : Column(
-                        children: filteredItems
-                            .map(
-                              (note) => Card(
-                                child: NoteTile(
-                                  note: note,
-                                  onTap: () => context.push('/note/${note.id}'),
-                                  onDelete: () =>
-                                      _deleteNote(context, ref, note),
-                                ),
-                              ),
-                            )
-                            .toList(),
+                    : _NoteItems(
+                        items: filteredItems,
+                        onTap: (note) => context.push('/note/${note.id}'),
+                        onDelete: (note) => _deleteNote(context, ref, note),
                       );
               },
             ),
@@ -244,6 +244,39 @@ class NotesPage extends ConsumerWidget {
       ref.invalidate(notesProvider);
       ref.invalidate(dirtyNotesCountProvider);
     }
+  }
+}
+
+class _NoteItems extends StatelessWidget {
+  const _NoteItems({
+    required this.items,
+    required this.onTap,
+    required this.onDelete,
+  });
+
+  final List<Note> items;
+  final ValueChanged<Note> onTap;
+  final ValueChanged<Note> onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        final note = items[index];
+        return RepaintBoundary(
+          child: Card(
+            child: NoteTile(
+              note: note,
+              onTap: () => onTap(note),
+              onDelete: () => onDelete(note),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 

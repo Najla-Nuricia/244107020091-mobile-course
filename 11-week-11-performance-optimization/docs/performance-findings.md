@@ -65,3 +65,25 @@ Trace yang tersedia tidak menunjukkan bukti cukup untuk menyatakan adanya
 `image decode` besar pada Raster Thread atau memory leak. Keduanya perlu
 diverifikasi masing-masing melalui Timeline Raster dan perbandingan Heap
 Snapshot sebelum/sesudah navigasi lima kali.
+
+## Hasil memory profiling
+
+Heap chart DevTools setelah pengambilan snapshot dan navigasi daftar-detail
+berulang menunjukkan penggunaan heap yang relatif stabil; tidak terlihat tren
+naik terus-menerus yang menunjukkan objek halaman menumpuk.
+
+Inspeksi lifecycle juga menunjukkan:
+
+- controller editor pada [`app.dart`](../week5_offline_notes/lib/app/app.dart)
+  dibuang setelah dialog selesai;
+- controller editor detail pada
+  [`note_detail_page.dart`](../week5_offline_notes/lib/pages/note_detail_page.dart)
+  dibuang setelah dialog selesai;
+- controller chat pada
+  [`chat_screen.dart`](../week5_offline_notes/lib/features/chat/chat_screen.dart)
+  dibuang di `State.dispose()`.
+
+Kesimpulan: tidak ditemukan memory leak yang memerlukan perubahan kode.
+Listener, stream subscription, dan animation controller juga tidak digunakan
+oleh halaman daftar/detail yang diuji, sehingga tidak ada `dispose()` tambahan
+yang diperlukan.

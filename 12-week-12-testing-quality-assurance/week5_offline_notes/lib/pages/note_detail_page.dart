@@ -40,62 +40,99 @@ class NoteDetailPage extends ConsumerWidget {
   }
 
   Future<void> _editNote(BuildContext context, WidgetRef ref, Note note) async {
-    final title = TextEditingController(text: note.title);
-    final body = TextEditingController(text: note.body);
-    final formKey = GlobalKey<FormState>();
     final saved = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Edit catatan'),
-        content: Form(
-          key: formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: title,
-                decoration: const InputDecoration(labelText: 'Judul'),
-                validator: (value) => value == null || value.trim().isEmpty
-                    ? 'Judul wajib diisi'
-                    : null,
-              ),
-              TextField(
-                controller: body,
-                maxLines: 4,
-                decoration: const InputDecoration(labelText: 'Isi catatan'),
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Batal'),
-          ),
-          FilledButton(
-            onPressed: () async {
-              if (!formKey.currentState!.validate()) return;
-              await ref
-                  .read(noteRepositoryProvider)
-                  .updateNote(
-                    id: note.id!,
-                    title: title.text.trim(),
-                    body: body.text.trim(),
-                  );
-              if (context.mounted) Navigator.pop(context, true);
-            },
-            child: const Text('Simpan'),
-          ),
-        ],
+      builder: (context) => _NoteEditDialog(
+        note: note,
+        onSave: (titleController, bodyController) async {
+          await ref
+              .read(noteRepositoryProvider)
+              .updateNote(
+                id: note.id!,
+                title: titleController.text.trim(),
+                body: bodyController.text.trim(),
+              );
+        },
       ),
     );
-    title.dispose();
-    body.dispose();
     if (saved == true) {
       ref.invalidate(noteDetailProvider(note.id!));
       ref.invalidate(notesProvider);
       ref.invalidate(dirtyNotesCountProvider);
     }
+  }
+}
+
+class _NoteEditDialog extends StatefulWidget {
+  const _NoteEditDialog({required this.note, required this.onSave});
+
+  final Note note;
+  final Future<void> Function(
+    TextEditingController title,
+    TextEditingController body,
+  )
+  onSave;
+
+  @override
+  State<_NoteEditDialog> createState() => _NoteEditDialogState();
+}
+
+class _NoteEditDialogState extends State<_NoteEditDialog> {
+  final _formKey = GlobalKey<FormState>();
+  final _titleController = TextEditingController(text: '');
+  final _bodyController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController.text = widget.note.title;
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _bodyController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _save() async {
+    if (!_formKey.currentState!.validate()) return;
+    await widget.onSave(_titleController, _bodyController);
+    if (mounted) Navigator.pop(context, true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Edit catatan'),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: _titleController,
+              decoration: const InputDecoration(labelText: 'Judul'),
+              validator: (value) => value == null || value.trim().isEmpty
+                  ? 'Judul wajib diisi'
+                  : null,
+            ),
+            TextField(
+              controller: _bodyController,
+              maxLines: 4,
+              decoration: const InputDecoration(labelText: 'Isi catatan'),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, false),
+          child: const Text('Batal'),
+        ),
+        FilledButton(onPressed: _save, child: const Text('Simpan')),
+      ],
+    );
   }
 }
 

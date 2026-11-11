@@ -131,5 +131,24 @@ void main() {
       expect(find.text('Catatan baru pengujian'), findsOneWidget);
       expect(find.text('Belum ada catatan.'), findsNothing);
     });
+
+    testWidgets('menampilkan pesan error saat catatan gagal dibaca', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            noteRepositoryProvider.overrideWithValue(
+              FakeNoteRepository(throwError: true),
+            ),
+          ],
+          child: const OfflineNotesApp(),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('Gagal membaca catatan'), findsOneWidget);
+    });
   });
 }

@@ -5,7 +5,8 @@ import '../../features/notes/data/repositories/note_repository_impl.dart';
 import '../../features/notes/domain/repositories/note_repository.dart'
     as domain;
 
-class NoteRepository extends NoteRepositoryImpl implements domain.NoteRepository {
+class NoteRepository extends NoteRepositoryImpl
+    implements domain.NoteRepository {
   NoteRepository({Future<Database> Function()? openDb})
     : super(NotesLocalDataSource(openDb: openDb));
 }

@@ -12,8 +12,8 @@ class AiService {
       'dan jangan mengarang fakta atau meminta data pribadi.';
 
   static const _apiUrl =
-    'https://generativelanguage.googleapis.com/v1beta/models/'
-    'gemini-3.8-flash:generateContent';
+      'https://generativelanguage.googleapis.com/v1beta/models/'
+      'gemini-3.8-flash:generateContent';
 
   Future<String> ask(
     String question, {
@@ -31,10 +31,7 @@ class AiService {
 
     final response = await http.post(
       Uri.parse(_apiUrl),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': apiKey,
-      },
+      headers: {'Content-Type': 'application/json', 'x-goog-api-key': apiKey},
       body: jsonEncode({
         'system_instruction': {
           'parts': [
@@ -53,8 +50,7 @@ class AiService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      final text =
-          data['candidates']?[0]?['content']?['parts']?[0]?['text'];
+      final text = data['candidates']?[0]?['content']?['parts']?[0]?['text'];
 
       if (text is String && text.trim().isNotEmpty) {
         return text;
@@ -69,9 +65,7 @@ class AiService {
         message = data['error']?['message'] ?? response.body;
       } catch (_) {}
 
-      throw Exception(
-        'Gemini API error (${response.statusCode}): $message',
-      );
+      throw Exception('Gemini API error (${response.statusCode}): $message');
     }
   }
 
@@ -82,10 +76,7 @@ class AiService {
       throw ArgumentError('API key tidak boleh kosong.');
     }
 
-    await _storage.write(
-      key: 'ai_api_key',
-      value: normalizedKey,
-    );
+    await _storage.write(key: 'ai_api_key', value: normalizedKey);
 
     if (await readApiKey() != normalizedKey) {
       throw Exception('API key gagal disimpan ke secure storage.');

@@ -76,3 +76,10 @@
 !11-week-11-performance-optimization/week5_offline_notes/lib/**
 !11-week-11-performance-optimization/week5_offline_notes/test/
 !11-week-11-performance-optimization/week5_offline_notes/test/**
+
+# Week 12: keep only source and tests
+12-week-12-testing-quality-assurance/week5_offline_notes/*
+!12-week-12-testing-quality-assurance/week5_offline_notes/lib/
+!12-week-12-testing-quality-assurance/week5_offline_notes/lib/**
+!12-week-12-testing-quality-assurance/week5_offline_notes/test/
+!12-week-12-testing-quality-assurance/week5_offline_notes/test/**

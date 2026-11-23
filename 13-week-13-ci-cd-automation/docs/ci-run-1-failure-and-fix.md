@@ -34,3 +34,14 @@ Karena workflow memakai `--fatal-infos`, 6 info tersebut membuat analyze gagal (
 | `flutter build appbundle --release` | 57,8 MB | — |
 
 Build lokal memakai Flutter 3.47.1; step build di CI perlu diverifikasi ulang setelah push perbaikan.
+
+## Run #3 dan #4 — dibatalkan
+
+Run #3 (commit `3efb8d5`) dan #4 (commit `dab190f`) dibatalkan (status `cancelled`) karena ada push baru saat run masih berjalan. Workflow memakai `concurrency.cancel-in-progress: true`, sehingga run lama otomatis dibatalkan.
+
+## Run #5 — kegagalan build Android
+
+- Run #5: https://github.com/Najla-Nuricia/244107020091-mobile-course/actions/runs/45175598994 — commit `ffa7bc4`
+- `flutter pub get`, format, analyze, dan test lolos. `flutter build apk --release` gagal.
+- Root cause: Flutter 3.50.1 membutuhkan Android Gradle Plugin minimal **9.1.1** dan Gradle minimal **9.5.0**. Project masih memakai AGP `9.1.0` dan wrapper Gradle `9.3.1`.
+- Perbaikan: `android/settings.gradle.kts` → AGP `9.1.1`; `android/gradle/wrapper/gradle-wrapper.properties` → Gradle `9.5.0`.

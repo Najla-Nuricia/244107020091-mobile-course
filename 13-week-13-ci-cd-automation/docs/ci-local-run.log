@@ -1,0 +1,57 @@
+Local verification of Week 13 CI pipeline (mirrors .github/workflows/week13-ci.yml)
+Date: 2026-11-23
+Flutter: 3.47.1 (stable), Dart: 3.13.1
+Working dir: 13-week-13-ci-cd-automation/week5_offline_notes
+
+[1/5] dart format --output=none --set-exit-if-changed .
+Formatted 34 files (0 changed) in 0.24 seconds.
+
+[2/5] flutter analyze --fatal-infos
+Analyzing week5_offline_notes...                                
+No issues found! (ran in 6.7s)
+
+[3/5] flutter test --coverage
+00:00 +0: loading /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/note_test.dart
+00:00 +0: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/note_test.dart: NoteModel fromMap aman terhadap field yang hilang
+00:00 +1: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/note_test.dart: NoteModel flag dirty bertahan pada serialisasi
+00:00 +2: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/note_test.dart: filterNotesByTitle sukses menemukan catatan tanpa peka huruf besar
+00:00 +3: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/note_test.dart: filterNotesByTitle gagal menghasilkan empty state untuk query tak cocok
+00:00 +4: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/note_test.dart: filterNotesByTitle query kosong mengembalikan semua catatan
+00:00 +5: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/note_test.dart: notesProvider provider sukses dengan repository palsu
+00:00 +6: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/note_test.dart: notesProvider provider error dengan repository palsu
+00:01 +7: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:01 +8: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:01 +9: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:01 +10: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:01 +11: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:01 +12: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:01 +13: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:01 +14: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:01 +15: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:01 +16: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:01 +17: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:01 +18: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:03 +19: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:03 +20: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:03 +21: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan tampilan awal saat belum ada catatan
+00:03 +22: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan catatan dari FakeNoteRepository override
+00:04 +23: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan empty state saat judul tidak cocok
+00:04 +24: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menolak simpan catatan dengan judul kosong (input tidak valid)
+00:05 +25: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menyimpan catatan baru lalu menampilkannya di daftar
+00:05 +26: /home/cecilyn/Documents/codes/244107020091-mobile-course/13-week-13-ci-cd-automation/week5_offline_notes/test/widget_test.dart: NotesPage (UI) menampilkan pesan error saat catatan gagal dibaca
+00:07 +27: All tests passed!
+
+[4/5] flutter build apk --release
+Running Gradle task 'assembleRelease'...                        
+Font asset "CupertinoIcons.ttf" was tree-shaken, reducing it from 257628 to 848 bytes (99.7% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 3264 bytes (99.8% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Running Gradle task 'assembleRelease'...                          529.2s
+✓ Built build/app/outputs/flutter-apk/app-release.apk (58.4MB)
+
+[5/5] flutter build appbundle --release
+Running Gradle task 'bundleRelease'...                             21.0s
+✓ Built build/app/outputs/bundle/release/app-release.aab (57.5MB)
+
+Artifacts:
+-rw-r--r--. 1 cecilyn cecilyn 55M Nov 23 19:04 13-week-13-ci-cd-automation/week5_offline_notes/build/app/outputs/bundle/release/app-release.aab
+-rw-r--r--. 1 cecilyn cecilyn 56M Nov 23 19:04 13-week-13-ci-cd-automation/week5_offline_notes/build/app/outputs/flutter-apk/app-release.apk

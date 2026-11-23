@@ -1,7 +1,7 @@
 # Run #1 — kegagalan dan perbaikan
 
-- Run: https://github.com/Najla-Nuricia/244107020091-mobile-course/actions/runs/45171971272
-- Commit: `9cffeec` (push ke `main`)
+- Run #1: https://github.com/Najla-Nuricia/244107020091-mobile-course/actions/runs/45171971272 — commit `9cffeec`
+- Run #2: https://github.com/Najla-Nuricia/244107020091-mobile-course/actions/runs/45172722608 — commit `367d182` (gagal dengan penyebab yang sama)
 - Hasil: **failure** pada step `flutter analyze --fatal-infos` (exit 1). Step `flutter test`, build, dan upload artefak tidak jalan.
 
 ## Root cause

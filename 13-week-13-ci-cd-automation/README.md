@@ -20,12 +20,12 @@ Workflow aktif: [`.github/workflows/week13-ci.yml`](../../.github/workflows/week
 
 | Step | Perintah | Hasil lokal |
 | --- | --- | --- |
-| Dependensi | `flutter pub get` | ✅ |
-| Format | `dart format --output=none --set-exit-if-changed .` | ✅ 34 file, 0 berubah |
-| Analisis | `flutter analyze --fatal-infos` | ✅ No issues found |
-| Test | `flutter test --coverage` | ✅ 27/27 passed |
-| APK | `flutter build apk --release` | ✅ 59,0 MB |
-| AAB | `flutter build appbundle --release` | ✅ 57,8 MB |
+| Dependensi | `flutter pub get` | PASS: |
+| Format | `dart format --output=none --set-exit-if-changed .` | PASS: 34 file, 0 berubah |
+| Analisis | `flutter analyze --fatal-infos` | PASS: No issues found |
+| Test | `flutter test --coverage` | PASS: 27/27 passed |
+| APK | `flutter build apk --release` | PASS: 59,0 MB |
+| AAB | `flutter build appbundle --release` | PASS: 57,8 MB |
 | Artefak | `actions/upload-artifact@v4` | `android-builds`, `retention-days: 7`, `if-no-files-found: error` |
 
 Bukti: [log verifikasi lokal](./docs/ci-local-run.log) · [run #1 dan perbaikannya](./docs/ci-run-1-failure-and-fix.md) · ![ringkasan hasil](./screenshots/ci-local-result.png)

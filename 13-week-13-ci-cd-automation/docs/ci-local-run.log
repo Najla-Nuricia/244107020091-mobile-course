@@ -25,12 +25,16 @@ Cross-check SDK: Flutter 3.50.1 (stable), Dart 3.14.0 (same stable as GitHub run
 Cross-check with Flutter 3.50.1 (CI runner version):
   flutter analyze --fatal-infos -> No issues found! (ran in 22.6s)
   flutter test --coverage       -> 00:20 +27: All tests passed!
+  flutter build apk --release   -> Built app-release.apk (57.9MB)
+  flutter build appbundle --release -> Built app-release.aab (57.6MB)
 
 Artifacts:
   build/app/outputs/flutter-apk/app-release.apk
   build/app/outputs/bundle/release/app-release.aab
 
-GitHub Actions run #1 (commit 9cffeec): failed at flutter analyze --fatal-infos
-because Flutter 3.50 deprecates package:flutter/material.dart (6 infos).
-Fixed by migrating imports to package:material_ui/material_ui.dart and adding
-material_ui: ^1.11.1. Details: docs/ci-run-1-failure-and-fix.md
+GitHub Actions:
+  Run #1/#2 (9cffeec, 367d182): failed at analyze, material.dart deprecated in Flutter 3.50.
+  Run #3/#4: cancelled by concurrency.cancel-in-progress.
+  Run #5 (ffa7bc4): failed at APK build, AGP 9.1.0 / Gradle 9.3.1 below Flutter 3.50 minimums.
+  Run #6 (6175595): success, artifact android-builds 84.838.898 bytes.
+  Details: docs/ci-run-1-failure-and-fix.md

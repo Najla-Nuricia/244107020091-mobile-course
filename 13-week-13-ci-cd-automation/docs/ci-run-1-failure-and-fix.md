@@ -45,3 +45,10 @@ Run #3 (commit `3efb8d5`) dan #4 (commit `dab190f`) dibatalkan (status `cancelle
 - `flutter pub get`, format, analyze, dan test lolos. `flutter build apk --release` gagal.
 - Root cause: Flutter 3.50.1 membutuhkan Android Gradle Plugin minimal **9.1.1** dan Gradle minimal **9.5.0**. Project masih memakai AGP `9.1.0` dan wrapper Gradle `9.3.1`.
 - Perbaikan: `android/settings.gradle.kts` → AGP `9.1.1`; `android/gradle/wrapper/gradle-wrapper.properties` → Gradle `9.5.0`.
+
+## Run #6 — sukses
+
+- Run: https://github.com/Najla-Nuricia/244107020091-mobile-course/actions/runs/45179568958
+- Commit: `6175595`
+- Status: **success**. Semua step lolos, termasuk `flutter build apk --release`, `flutter build appbundle --release`, dan `actions/upload-artifact@v4`.
+- Artefak: `android-builds` (84.838.898 byte), tidak expired, retensi 7 hari.

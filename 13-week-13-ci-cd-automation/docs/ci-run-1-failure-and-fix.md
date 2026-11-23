@@ -28,9 +28,9 @@ Karena workflow memakai `--fatal-infos`, 6 info tersebut membuat analyze gagal (
 | Pemeriksaan | Flutter 3.47.1 | Flutter 3.50.1 (versi CI) |
 | --- | --- | --- |
 | `dart format --output=none --set-exit-if-changed .` | 34 file, 0 berubah | |
-| `flutter analyze --fatal-infos` | ✅ No issues found | No issues found |
-| `flutter test --coverage` | ✅ 27/27 | ✅ 27/27 |
-| `flutter build apk --release` | ✅ 59,0 MB | — |
-| `flutter build appbundle --release` | ✅ 57,8 MB | — |
+| `flutter analyze --fatal-infos` | No issues found | No issues found |
+| `flutter test --coverage` | 27/27 | 27/27 |
+| `flutter build apk --release` |  59,0 MB | — |
+| `flutter build appbundle --release` | 57,8 MB | — |
 
 Build lokal memakai Flutter 3.47.1; step build di CI perlu diverifikasi ulang setelah push perbaikan.

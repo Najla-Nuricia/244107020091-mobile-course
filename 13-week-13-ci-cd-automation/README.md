@@ -30,7 +30,7 @@ Workflow aktif: [`.github/workflows/week13-ci.yml`](../../.github/workflows/week
 
 Bukti: [log verifikasi lokal](./docs/ci-local-run.log) · ![ringkasan hasil](./screenshots/ci-local-result.png)
 
-Catatan: sesuai permintaan, perubahan **belum di-commit / di-push**, sehingga run GitHub Actions belum bisa dibuat. Setelah commit dan push ke `main` (atau membuka PR), buka tab **Actions** → **Week 13 Flutter CI** → pilih run → unduh artefak `android-builds`. Artefak berisi:
+Run GitHub Actions: [Week 13 Flutter CI #1](https://github.com/Najla-Nuricia/244107020091-mobile-course/actions/runs/45171971272) — commit `9cffeec`, event `push` ke `main`. Artefak dapat diunduh dari halaman run tersebut (`android-builds`). Artefak berisi:
 
 - `build/app/outputs/flutter-apk/app-release.apk` — untuk instalasi/uji internal;
 - `build/app/outputs/bundle/release/app-release.aab` — format distribusi Google Play.

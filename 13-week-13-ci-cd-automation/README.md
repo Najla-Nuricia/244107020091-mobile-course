@@ -24,13 +24,13 @@ Workflow aktif: [`.github/workflows/week13-ci.yml`](../../.github/workflows/week
 | Format | `dart format --output=none --set-exit-if-changed .` | ✅ 34 file, 0 berubah |
 | Analisis | `flutter analyze --fatal-infos` | ✅ No issues found |
 | Test | `flutter test --coverage` | ✅ 27/27 passed |
-| APK | `flutter build apk --release` | ✅ 58,4 MB |
-| AAB | `flutter build appbundle --release` | ✅ 57,5 MB |
+| APK | `flutter build apk --release` | ✅ 59,0 MB |
+| AAB | `flutter build appbundle --release` | ✅ 57,8 MB |
 | Artefak | `actions/upload-artifact@v4` | `android-builds`, `retention-days: 7`, `if-no-files-found: error` |
 
-Bukti: [log verifikasi lokal](./docs/ci-local-run.log) · ![ringkasan hasil](./screenshots/ci-local-result.png)
+Bukti: [log verifikasi lokal](./docs/ci-local-run.log) · [run #1 dan perbaikannya](./docs/ci-run-1-failure-and-fix.md) · ![ringkasan hasil](./screenshots/ci-local-result.png)
 
-Run GitHub Actions: [Week 13 Flutter CI #1](https://github.com/Najla-Nuricia/244107020091-mobile-course/actions/runs/45171971272) — commit `9cffeec`, event `push` ke `main`. Artefak dapat diunduh dari halaman run tersebut (`android-builds`). Artefak berisi:
+Run GitHub Actions pertama: [Week 13 Flutter CI #1](https://github.com/Najla-Nuricia/244107020091-mobile-course/actions/runs/45171971272) — commit `9cffeec`, event `push` ke `main`. Run ini **gagal** di `flutter analyze --fatal-infos` karena Flutter 3.50 di runner menandai `package:flutter/material.dart` sebagai deprecated; sudah diperbaiki dengan migrasi ke `package:material_ui/material_ui.dart` (lihat dokumen di atas) tanpa menonaktifkan pemeriksaan. Artefak akan tersedia pada run setelah perbaikan di-push. Artefak berisi:
 
 - `build/app/outputs/flutter-apk/app-release.apk` — untuk instalasi/uji internal;
 - `build/app/outputs/bundle/release/app-release.aab` — format distribusi Google Play.

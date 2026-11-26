@@ -5,6 +5,10 @@ import 'package:flutter/foundation.dart';
 
 import 'firebase_options.dart';
 
+/// Beta-only trigger, enabled at build time with
+/// `--dart-define=ENABLE_BETA_PROBE=true`. Production builds omit it.
+const bool betaProbeEnabled = bool.fromEnvironment('ENABLE_BETA_PROBE');
+
 Future<void> initMonitoring() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 

@@ -73,6 +73,21 @@ class NotesPage extends ConsumerWidget {
               }
             },
           ),
+          if (betaProbeEnabled)
+            IconButton(
+              tooltip: 'Uji monitoring beta',
+              icon: const Icon(Icons.bug_report_outlined),
+              onPressed: () async {
+                await recordNonFatalProbe('beta_device_check');
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Probe Crashlytics terkirim.'),
+                    ),
+                  );
+                }
+              },
+            ),
           IconButton(
             tooltip: 'AI chat',
             icon: const Icon(Icons.smart_toy_outlined),

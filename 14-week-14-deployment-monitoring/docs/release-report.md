@@ -133,6 +133,6 @@ Saran AI diverifikasi dengan cara berikut:
 ## 9. Batasan
 
 - Tidak ada bukti dashboard GA4 karena keterbatasan scope kredensial; tidak ada angka event GA4 yang diklaim.
-- Tidak ada bukti Google Play Internal testing karena akun Play Console tidak tersedia.
+- Tidak ada bukti Google Play Internal testing karena akun Play Console tidak tersedia karena berbayar.
 - Email tester, serial perangkat lengkap, token unduh, token OAuth, password keystore, dan kunci privat tidak disimpan di repository maupun di dokumen ini.
 - Semua angka yang tercantum berasal dari perintah lokal atau pembacaan API yang dapat diulang dengan kredensial yang sesuai.

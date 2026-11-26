@@ -1,104 +1,138 @@
-# Laporan Rilis Beta
+# Laporan Rilis Beta — week5_offline_notes
 
-Kandidat beta-1 untuk `week5_offline_notes`, disusun 23 November 2026.
+Disusun 26 November 2026. Kandidat `beta-1`, versi **1.1.0+4**, commit **`f1aa2f5`**, tag **`v1.1.0-beta1`**.
 
 ## 1. Identitas kandidat
 
 | Field | Nilai |
 | --- | --- |
-| Versi dan build | 1.1.0+3 |
-| Commit dasar | `6880d1195ee82abd69ce2698947b0adb1eddb74e` |
-| Kondisi Git | worktree belum di-commit sesuai instruksi pengguna |
+| Versi / build | 1.1.0 / 4 (`versionName=1.1.0`, `versionCode=4`) |
+| Commit | `f1aa2f5a5e2cc05eff7daa0da7c7174aee6afb55` |
+| Tag | `v1.1.0-beta1` |
+| Kondisi Git | clean saat build; artefak dapat dipetakan ke satu commit |
 | Package | `com.example.week5_offline_notes` |
-| Firebase project | `campus-notify-5a928` |
-| Firebase Android app id | `1:1022630052540:android:b50669d7beb9d091c306b9` |
-| AAB | `../week5_offline_notes/build/app/outputs/bundle/release/app-release.aab` |
-| Ukuran AAB | 59888061 bytes |
-| SHA-256 AAB | `82d459f019424e1ca6c6775bd86eeb035fc228647685824af1a9bd5a9fdbede0` |
-| Flutter | 3.47.1 |
+| Firebase | `campus-notify-5a928`, app `1:1022630052540:android:b50669d7beb9d091c306b9` |
+| AAB | 59.889.468 bytes, SHA-256 `02d19fd0…c62caf` |
+| APK terdistribusi | 60.083.676 bytes, SHA-256 `36a704b5…d94d7ba` |
+| Signing | keystore rilis di luar repo; sertifikat SHA-256 `87d4f8e3…5325bb` |
+| Flag build | `--dart-define=ENABLE_BETA_PROBE=true` |
 
-Sumber data ada di [`beta-candidate-metadata.txt`](./beta-candidate-metadata.txt).
+Detail lengkap: [`beta-candidate-metadata.txt`](./beta-candidate-metadata.txt).
 
 ## 2. Bukti distribusi
-Belum ada distribusi nyata yang dilakukan pada kandidat ini. Tidak ada unggahan ke Google Play Internal testing dan tidak ada unggahan ke Firebase App Distribution.
 
-Alasan:
+Distribusi **benar-benar dilakukan** ke Firebase App Distribution, bukan direncanakan saja.
 
-- Akun Google Play Console tidak tersedia di lingkungan ini.
-- Firebase App Distribution memerlukan daftar email tester yang tidak diberikan.
-- Tidak ada perangkat Android fisik. Satu emulator tersedia tetapi `PlayStore.enabled` bernilai `no`, sehingga layanan Google Play yang dibutuhkan Analytics dan Crashlytics tidak dapat diandalkan.
-- Membuat tangkapan dashboard atau daftar tester palsu dilarang oleh codelab, jadi tidak ada bukti tersebut di repository.
+| Bukti | Nilai |
+| --- | --- |
+| Perintah | `firebase appdistribution:distribute ... --groups beta-testers` |
+| Hasil | `uploaded new release 1.1.0 (4) successfully!`, `distributed to testers/groups successfully` |
+| Release ID | `0u0b3pgpdqn58` |
+| Waktu dibuat | 2026-11-26T10:22:58Z |
+| Grup | `beta-testers` — 1 tester (email tidak dicantumkan di laporan) |
+| Tautan konsol | https://console.firebase.google.com/project/campus-notify-5a928/appdistribution/app/android:com.example.week5_offline_notes/releases/0u0b3pgpdqn58 |
+| Verifikasi API | `releases.list` HTTP 200, `groups.list` HTTP 200 (`testerCount: 1`, `releaseCount: 1`) |
 
-Bukti yang benar-benar ada hanyalah artefak lokal berupa AAB beserta checksum, konfigurasi Firebase yang dihasilkan oleh `flutterfire configure`, dan log pemeriksaan. Artefak AAB tidak dibagikan ke publik.
+Log unggahan (tautan unduh dengan token pendek sudah dihapus): [`app-distribution-upload.log`](./app-distribution-upload.log).
+Hasil pembacaan dashboard: [`dashboard-verification.txt`](./dashboard-verification.txt).
+
+**Keterbatasan distribusi:** unggahan AAB ditolak dengan pesan bahwa project Firebase belum terhubung ke akun Google Play Console, dan akun Play Console tidak tersedia di lingkungan ini. Karena itu yang didistribusikan adalah **APK rilis dari commit, signing, dan flag build yang sama** dengan AAB. AAB tetap dibangun, diverifikasi, dan dicatat checksum-nya. Lihat [`aab-upload-attempt.log`](./aab-upload-attempt.log).
 
 ## 3. Hasil uji
 
 | Pemeriksaan | Perintah | Hasil |
 | --- | --- | --- |
 | Dependensi | `flutter pub get` | PASS |
-| Format | `dart format --output=none --set-exit-if-changed .` | PASS, 36 file, 0 berubah |
-| Analisis statis | `flutter analyze --fatal-infos` | PASS, No issues found |
-| Unit dan widget test | `flutter test` | PASS, 27 dari 27 |
-| Build AAB | `flutter build appbundle --release` | PASS, 59,9 MB |
+| Format | `dart format --output=none --set-exit-if-changed .` | PASS — 36 file, 0 berubah |
+| Analisis | `flutter analyze --fatal-infos` | PASS — `No issues found!` |
+| Test | `flutter test --reporter expanded` | PASS — 27/27 |
+| AAB | `flutter build appbundle --release --dart-define=ENABLE_BETA_PROBE=true` | PASS — 59,9 MB |
+| APK | `flutter build apk --release --dart-define=ENABLE_BETA_PROBE=true` | PASS — 60,1 MB |
+| Tanda tangan | `apksigner verify --print-certs app-release.apk` | PASS — V2, sertifikat `CN=Offline Notes Beta` |
+| Instalasi | `adb install` dari biner hasil unduhan App Distribution | PASS — `versionName 1.1.0`, `versionCode 4` |
 
-Log mentah ada di [`beta-candidate-checks.log`](./beta-candidate-checks.log) dan [`beta-aab-build.log`](./beta-aab-build.log).
+Log: [`beta-candidate-checks.log`](./beta-candidate-checks.log), [`beta-aab-build.log`](./beta-aab-build.log).
 
-Telemetry belum diverifikasi di dashboard. Kode sudah memuat inisialisasi Firebase, penangan error fatal, dan event `beta_feedback_sent` dengan parameter `screen_name` bernilai `home`. Tidak ada error uji non-fatal maupun crash fatal yang dikirim dari perangkat, jadi angka crash-free users dan daftar issue belum tersedia.
+### Uji perangkat
+
+Perangkat: Infinix X6882, Android 14 (SDK 34), `arm64-v8a`, serial disamarkan.
+
+1. Aplikasi dibuka dari launcher; beranda menampilkan daftar catatan dan status sinkronisasi.
+2. Tombol **Kirim masukan** ditekan → snackbar `Masukan beta tercatat.` Muncul satu event Analytics `beta_feedback_sent` dengan parameter tetap `screen_name=home`. Tidak ada isi formulir, email, atau ID pengguna yang dikirim.
+3. Tombol **Uji monitoring beta** (hanya ada pada build dengan `ENABLE_BETA_PROBE=true`) ditekan → snackbar `Probe Crashlytics terkirim.`
+4. Logcat menunjukkan Crashlytics aktif, sesi dibuka, dan laporan non-fatal berhasil dienque ke DataTransport lalu terkirim (`crashlyticsreports-pa.googleapis.com`).
+5. Tidak ada crash fatal yang dipicu.
+
+Bukti: [`screenshots/device-home.png`](./screenshots/device-home.png), [`screenshots/device-feedback.png`](./screenshots/device-feedback.png), [`screenshots/device-telemetry.png`](./screenshots/device-telemetry.png), [`device-test-log.txt`](./device-test-log.txt).
+
+### Verifikasi telemetry di dashboard
+
+Crashlytics **terverifikasi di dashboard** melalui Crashlytics API:
+
+- Issue `ca417bae60a4992ebabfd1cfc530011f`
+- Judul: `package:week5_offline_notes/monitoring.dart - .recordNonFatalProbe`
+- Subtitle: `Bad state: beta_device_check. Error thrown monitoring_probe.`
+- `errorType: NON_FATAL`, `firstSeenVersion`/`lastSeenVersion`: `1.1.0`, state `OPEN`
+- Metrik 7 hari: 1 event, 1 pengguna terdampak, 2 sesi total
+- Tautan issue: https://console.firebase.google.com/v1/appid/project/campus-notify-5a928/crashlytics/app/1:1022630052540:android:b50669d7beb9d091c306b9/issues/ca417bae60a4992ebabfd1cfc530011f
+
+Analytics: event berhasil dipicu dan dicatat di perangkat (log mode debug Firebase Analytics menunjukkan aktivitas `logEvent`, dan UI mengonfirmasi aksi tester). **Pembacaan balik di dashboard GA4 tidak dapat dilakukan** dengan kredensial yang tersedia: OAuth CLI hanya memiliki scope `cloud-platform`, `firebase`, dan `userinfo.email`, sedangkan Analytics Data/Admin API memerlukan scope `analytics` serta izin level properti GA4. Tidak ada klaim angka event GA4 di laporan ini. Verifikasi manual dapat dilakukan di Firebase console → Analytics → DebugView dengan perangkat yang sama; petunjuk ada di bagian langkah berikutnya.
 
 ## 4. Temuan
 
-- Dua masalah ditemukan saat pemeriksaan awal dan sudah diperbaiki sebelum build akhir. Pertama, file `lib/monitoring.dart` belum terformat sehingga `dart format` dengan `--set-exit-if-changed` gagal. Kedua, `flutter analyze --fatal-infos` menandai import `dart:ui` sebagai tidak perlu karena `package:flutter/foundation.dart` sudah mengekspor `PlatformDispatcher`.
-- `flutterfire configure` berhasil mendaftarkan package `com.example.week5_offline_notes` ke project Firebase `campus-notify-5a928` yang sudah dipakai project minggu 6 dan menghasilkan `google-services.json` beserta `firebase_options.dart`. Pendaftaran ini adalah perubahan nyata pada project Firebase eksternal dan perlu diketahui pemilik project.
-- Build release masih menggunakan signing debug bawaan dari project minggu 13. Ini bukan konfigurasi yang layak untuk rilis publik.
-- Karena perubahan tidak di-commit, identitas kandidat belum bisa direproduksi dari satu SHA Git. AAB harus dibangun ulang setelah commit atau tag dibuat.
+1. Perbaikan sebelum build akhir: `lib/app/app.dart` perlu diformat ulang setelah penambahan tombol probe; setelah `dart format .` dijalankan, seluruh pemeriksaan dijalankan ulang dan lulus.
+2. AAB tidak dapat diunggah ke App Distribution tanpa keterkaitan Firebase–Play Console. Solusi yang dipakai: APK dari commit yang sama. Ini adalah keterbatasan nyata, bukan bukti yang dibuat-buat.
+3. Aplikasi yang lama terpasang di perangkat bertanda tangan debug, sehingga `adb install -r` gagal dengan `INSTALL_FAILED_UPDATE_INCOMPATIBLE`. Aplikasi lama di-uninstall lalu biner beta dipasang bersih. Signing rilis kini memakai keystore di luar repository; `android/key.properties` masuk `.gitignore`.
+4. Tombol probe hanya dikompilasi lewat `--dart-define=ENABLE_BETA_PROBE=true`. Build produksi tanpa flag tidak menyediakan pemicu error buatan.
+5. Satu issue non-fatal muncul di Crashlytics sesuai probe yang sengaja dipicu. Angka `crashFreeSessionsPercentage: 50` berasal dari sampel sangat kecil (2 sesi, 1 probe) dan tidak boleh diartikan sebagai kualitas rilis.
+6. Verifikasi GA4 terkendala scope OAuth; ini dicatat sebagai keterbatasan, bukan sebagai keberhasilan verifikasi.
 
 ## 5. Dampak
 
-- Dampak teknis dari perubahan kode kecil dan terbatas pada startup aplikasi, tombol Kirim masukan di beranda, serta konfigurasi build Android. Seluruh test yang ada masih lulus.
-- Dampak operasional belum teramati karena tidak ada tester yang memakai build ini.
-- Risiko utama adalah keputusan rilis diambil tanpa data distribusi dan telemetry. Data agregat belum ada, sehingga tidak ada dasar untuk menyatakan build bebas crash di perangkat nyata.
-- Risiko sekunder adalah penggunaan signing debug. Jika AAB ini sampai terdistribusi, aplikasi akan bertanda tangan dengan kunci yang tidak terkontrol dengan baik.
+- **Fungsional:** perubahan terbatas pada startup (inisialisasi Firebase + penangan error),tombol Kirim masukan, tombol probe beta, dan konfigurasi signing Android. Seluruh 27 test masih lulus dan alur utama notes berjalan di perangkat.
+- **Operasional:** build beta kini benar-benar tersedia untuk tester internal melalui tautan App Distribution. Satu tester terdaftar dan satu release aktif.
+- **Data:** satu event non-sensitif dan satu error non-fatal buatan masuk ke layanan monitoring. Tidak ada catatan, email, token, atau identifier pribadi yang dikirim.
+- **Risiko:** sampel uji masih satu perangkat dan satu tester, sehingga metrik agregat belum representatif. Rilis publik tetap memerlukan AAB dari Play Console dan verifikasi GA4 yang benar.
 
 ## 6. Keputusan
 
-Rilis ditahan. Alasannya bukan kegagalan pemeriksaan otomatis, melainkan ketiadaan bukti distribusi, ketiadaan perangkat uji yang mendukung telemetry, dan konfigurasi signing yang belum sesuai untuk rilis.
+**Lanjut untuk beta internal terbatas; tahan perluasan ke produksi.**
 
-Keputusan ini bersifat sementara. Rilis dapat dilanjutkan setelah kriteria di bagian berikutnya terpenuhi. Penanggung jawab untuk langkah berikutnya adalah pemilik project, yaitu Najla Nuricia Laudy. Perbaikan yang dibutuhkan adalah membuat commit bersih, menyiapkan signing rilis, dan mengulang distribusi serta verifikasi telemetry.
+Alasan: kandidat memiliki commit/tag yang dapat direproduksi, seluruh pemeriksaan lulus, artefak benar-benar terdistribusi dan terpasang di perangkat nyata, serta crash non-fatal yang dipicu terlihat di dashboard Crashlytics. Penahanan produksi dilakukan karena distribusi memakai APK (bukan AAB), sampel tester masih sangat kecil, dan angka Analytics belum diverifikasi di dashboard. Penanggung jawab: Najla Nuricia Laudy (TI-3F).
 
 ## 7. Langkah berikutnya
 
-1. Commit seluruh worktree minggu 14 lalu buat tag `v1.1.0-beta1` dari commit tersebut.
-2. Bangun ulang AAB dari commit bertag dan rekam SHA-256 terbaru.
-3. Siapkan signing rilis dengan keystore yang disimpan di luar repository dan disuntikkan lewat secrets pada pipeline.
-4. Daftar tester internal dengan email yang benar-benar diberikan, lalu unggah AAB ke Internal testing atau Firebase App Distribution.
-5. Instal di perangkat Android nyata dan jalankan alur utama, termasuk mengetuk tombol Kirim masukan.
-6. Picu satu error non-fatal buatan lewat `recordNonFatalProbe` hanya pada perangkat uji, lalu tunggu pemrosesan dan periksa event, versi aplikasi, perangkat, serta stack trace di dashboard.
-7. Uji crash fatal hanya sesuai instruksi resmi Firebase dan hanya pada perangkat uji.
-8. Catat crash-free users, issue baru, jumlah pengguna terdampak, versi, dan laporan tester sebelum memutuskan perluasan distribusi.
-9. Jika masalah muncul pada alur utama, tahan distribusi dan ikuti prosedur penghentian atau rollback track.
+1. Hubungkan project Firebase ke akun Google Play Console, lalu unggah AAB bertag `v1.1.0-beta1` ke **Internal testing** dan undang tester melalui konsol.
+2. Perbesar jumlah tester internal dan kumpulkan laporan terstruktur (versi, perangkat, OS, langkah reproduksi, hasil harapan vs aktual, bukti disamarkan).
+3. Verifikasi event `beta_feedback_sent` di Firebase console → Analytics → DebugView/Dashboard dengan `adb shell setprop debug.firebase.analytics.app com.example.week5_offline_notes`, atau berikan akses properti GA4 pada akun verifikasi untuk pembacaan API.
+4. Pantau crash-free users/sessions, issue baru, pengguna terdampak, dan versi sebelum memutuskan perluasan rilis.
+5. Simpan keystore rilis di secrets pipeline CI dan pastikan build produksi tidak memakai signing debug.
+6. Jika muncul issue pada alur utama, reproduksi, perbaiki, naikkan build number, dan ulangi distribusi; hentikan/rollback track bila dampaknya luas.
 
 ## 8. Penggunaan AI dan log yang disamarkan
 
-Asisten AI dipakai untuk merangkai dokumentasi, mengecek urutan perintah codelab, dan menafsirkan hasil pemeriksaan lokal. Konteks yang diberikan berupa ringkasan buatan sendiri, bukan log mentah dari layanan eksternal. Ringkasan itu hanya berisi path file lokal, nomor versi, sha256 artefak, serta baris hasil perintah seperti `No issues found` dan `All tests passed`. Tidak ada email, token, kredensial, ID pengguna, URL privat, atau isi catatan yang disalin ke percakapan.
-
-Contoh konteks yang disamarkan.
+Asisten AI dipakai untuk merangkai laporan, mengecek urutan perintah codelab, menafsirkan hasil pemeriksaan, dan membantu menyiapkan kueri REST API untuk verifikasi dashboard. Konteks yang diberikan hanya berupa ringkasan buatan sendiri: path file lokal, nomor versi/build, hash artefak, status perintah (`No issues found`, `All tests passed`), serta cuplikan respons API yang sudah dihapus email/token/ID perangkatnya.
 
 ```text
-versi = 1.1.0+3
-commit dasar = 6880d11
+versi = 1.1.0+4
+commit = f1aa2f5
 hasil analisis = No issues found
-hasil test = All tests passed
-sha256 artefak = 82d459f0...fdbede0
+hasil test = 27/27 passed
+sha256 AAB = 02d19fd0...c62caf
+status rilis = uploaded, release id 0u0b3pgpdqn58
 ```
 
-Saran AI diverifikasi dengan cara berikut.
+Saran AI diverifikasi dengan cara berikut:
 
-- Setiap perintah yang disarankan dijalankan kembali di project dan keluarannya dibaca langsung, bukan dipercaya begitu saja.
-- Saran penanganan error fatal dan non-fatal dibandingkan dengan dokumentasi resmi FlutterFire dan kode paket yang terpasang.
-- Klaim bahwa analisis lolos dicek dengan menjalankan `flutter analyze --fatal-infos`, bukan hanya dengan membaca ringkasan.
-- Klaim bahwa test lolos dicek dari log `flutter test` yang menunjukkan 27 test selesai.
-- Tidak ada saran AI yang dipakai sebagai pengganti bukti distribusi atau bukti dashboard.
+- Setiap perintah dijalankan kembali di lingkungan ini dan keluarannya dibaca langsung, bukan dipercaya dari ringkasan.
+- Klaim analisis/test lolos dicek dari log [`beta-candidate-checks.log`](./beta-candidate-checks.log).
+- Klaim distribusi dicek dari log unggahan dan pembacaan `releases.list`/`groups.list` melalui API.
+- Klaim Crashlytics terverifikasi dicek dari `topIssues` dan `issue.get` yang mengembalikan judul, subtitle, versi, dan metrik.
+- Klaim Analytics sengaja **tidak** dibuat berdasarkan dugaan AI; bukti yang ada hanya berasal dari perangkat dan log SDK.
 
 ## 9. Batasan
 
-Laporan ini belum berisi bukti dashboard, tangkapan layar konsol, daftar tester, atau catatan instalasi perangkat karena hal tersebut tidak benar-benar dilakukan. Semua angka yang tercantum berasal dari perintah lokal yang dapat diulang. Status telemetry adalah terkonfigurasi pada level kode dan konfigurasi, bukan terverifikasi pada level layanan.
+- Tidak ada bukti dashboard GA4 karena keterbatasan scope kredensial; tidak ada angka event GA4 yang diklaim.
+- Tidak ada bukti Google Play Internal testing karena akun Play Console tidak tersedia.
+- Email tester, serial perangkat lengkap, token unduh, token OAuth, password keystore, dan kunci privat tidak disimpan di repository maupun di dokumen ini.
+- Semua angka yang tercantum berasal dari perintah lokal atau pembacaan API yang dapat diulang dengan kredensial yang sesuai.

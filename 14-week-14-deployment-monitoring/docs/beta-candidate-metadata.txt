@@ -1,0 +1,41 @@
+Kandidat beta-1 / week5_offline_notes — 26 November 2026
+
+Identitas
+  versi aplikasi       : 1.1.0
+  build number         : 4 (Android versionCode)
+  versi lengkap        : 1.1.0+4
+  commit kandidat      : f1aa2f5a5e2cc05eff7daa0da7c7174aee6afb55
+  tag                  : v1.1.0-beta1
+  package              : com.example.week5_offline_notes
+  Firebase project     : campus-notify-5a928 (nomor 1022630052540)
+  Firebase Android app : 1:1022630052540:android:b50669d7beb9d091c306b9
+  build flag           : --dart-define=ENABLE_BETA_PROBE=true
+
+Artefak
+  AAB  : build/app/outputs/bundle/release/app-release.aab
+  ukuran AAB : 59889468 bytes
+  sha256 AAB : 02d19fd0c3df3d19e9b5bb1e4ca616e03aa6928325e15e016f785f33e8c62caf
+  APK  : build/app/outputs/flutter-apk/app-release.apk (binary yang didistribusikan)
+  ukuran APK : 60083676 bytes
+  sha256 APK : 36a704b5fbbcdc9fe3e19c6fa2cb6274c80df1e28aa7cf93f852bdf58d94d7ba
+  sertifikat penandatanganan (SHA-256):
+    87d4f8e3b041440ca50bfd2bd16fb1deef1be618551f82e2ebdaf808759325bb
+  keystore disimpan di luar repository; android/key.properties tidak di-commit.
+
+Distribusi
+  layanan       : Firebase App Distribution
+  grup          : beta-testers (1 tester, email disamarkan)
+  release id    : 0u0b3pgpdqn58
+  dibuat (UTC)  : 2026-11-26T10:22:58.334550Z
+  status        : terunggah, catatan rilis tersimpan, tersebar ke grup
+
+Perangkat uji
+  model      : Infinix X6882
+  OS         : Android 14 (SDK 34), arm64-v8a
+  serial     : 13313704******58 (disamarkan)
+  pemasangan : biner hasil unduhan App Distribution, versionName 1.1.0 / versionCode 4
+
+Catatan
+  Upload AAB ditolak karena project Firebase belum terhubung ke akun Play Console.
+  APK dengan commit, signing, dan flag build yang sama yang didistribusikan.
+  Tidak ada token, password, email tester, atau identifier perangkat lengkap disimpan di sini.

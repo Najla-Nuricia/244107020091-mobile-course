@@ -1,0 +1,73 @@
+Dashboard verification via Firebase REST APIs, 2026-11-26 (UTC).
+Authentication: Firebase CLI account; no token is stored in this file.
+
+== Firebase App Distribution: releases.list ==
+HTTP 200
+{
+  "name": "projects/1022630052540/apps/1:1022630052540:android:b50669d7beb9d091c306b9/releases/0u0b3pgpdqn58",
+  "displayVersion": "1.1.0",
+  "buildVersion": "4",
+  "createTime": "2026-11-26T10:22:58.334550Z",
+  "releaseNotes": {
+    "text": "v1.1.0+4 (code 4) from v1.1.0-beta1 / f1aa2f5. Internal beta: offline notes, feedback event, Crashlytics probe."
+  }
+}
+
+== Firebase App Distribution: groups.list ==
+HTTP 200 {
+  "groups": [
+    {
+      "name": "projects/1022630052540/groups/beta-testers",
+      "displayName": "Beta Testers",
+      "testerCount": 1,
+      "releaseCount": 1
+    }
+  ]
+}
+
+== Firebase Crashlytics: topIssues report ==
+HTTP 200
+{
+  "metrics": [
+    {
+      "startTime": "2026-11-19T00:00:00Z",
+      "endTime": "2026-11-26T23:59:59Z",
+      "eventsCount": "1",
+      "impactedUsersCount": "1",
+      "sessionsCount": "1",
+      "impactedSessionsCount": "1",
+      "totalUsersCount": "1",
+      "totalSessionsCount": "3",
+      "crashFreeSessionsPercentage": 66.666664
+    }
+  ],
+  "issue": {
+    "id": "ca417bae60a4992ebabfd1cfc530011f",
+    "title": "package:week5_offline_notes/monitoring.dart - .recordNonFatalProbe",
+    "subtitle": "io.flutter.plugins.firebase.crashlytics.FlutterError - Bad state: beta_device_check. Error thrown monitoring_probe.",
+    "errorType": "NON_FATAL",
+    "firstSeenVersion": "1.1.0",
+    "lastSeenVersion": "1.1.0",
+    "state": "OPEN",
+    "name": "projects/1022630052540/apps/1:1022630052540:android:b50669d7beb9d091c306b9/issues/ca417bae60a4992ebabfd1cfc530011f",
+    "uri": "https://console.firebase.google.com/v1/appid/project/campus-notify-5a928/crashlytics/app/1:1022630052540:android:b50669d7beb9d091c306b9/issues/ca417bae60a4992ebabfd1cfc530011f?&time=1795046400000:1795737599000"
+  }
+}
+
+== Firebase Crashlytics: issue.get ==
+HTTP 200 {
+  "id": "ca417bae60a4992ebabfd1cfc530011f",
+  "title": "package:week5_offline_notes/monitoring.dart - .recordNonFatalProbe",
+  "subtitle": "io.flutter.plugins.firebase.crashlytics.FlutterError - Bad state: beta_device_check. Error thrown monitoring_probe.",
+  "errorType": "NON_FATAL",
+  "firstSeenVersion": "1.1.0",
+  "lastSeenVersion": "1.1.0",
+  "state": "OPEN",
+  "uri": "https://console.firebase.google.com/v1/appid/project/campus-notify-5a928/crashlytics/app/1:1022630052540:android:b50669d7beb9d091c306b9/issues/ca417bae60a4992ebabfd1cfc530011f?&time=90d"
+}
+
+== Analytics note ==
+GA4 Data/Admin APIs require an OAuth scope and property-level IAM that the
+available Firebase CLI credential does not have. Event emission was verified
+on the device (see device-test-log.txt and screenshots); dashboard read-back
+was not possible with this credential and is not claimed here.

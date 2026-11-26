@@ -1,0 +1,3 @@
+i  uploading binary...
+
+Error: Failed to upload release. There's been an error uploading your app bundle. Your Firebase project needs to be connected to your Google Play developer account. Visit the App Distribution page in the Firebase Console for more information.

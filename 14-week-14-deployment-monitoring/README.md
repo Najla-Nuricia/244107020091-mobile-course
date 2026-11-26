@@ -31,6 +31,20 @@ Laporan lengkap: [`docs/release-report.md`](./docs/release-report.md). Bukti pen
 - APK rilis diunggah ke Firebase App Distribution dan **benar-benar dipasang serta diuji** pada perangkat Android fisik. Unggahan AAB ditolak karena project belum terhubung ke Play Console; keterbatasan ini dicatat di laporan.
 - Error non-fatal buatan muncul di dashboard Crashlytics dengan versi `1.1.0`. Event Analytics dipicu di perangkat; pembacaan balik GA4 tidak memungkinkan dengan scope kredensial yang tersedia dan tidak diklaim.
 
+## Bukti uji di perangkat
+
+Screenshot diambil dari Infinix X6882 (Android 14) setelah memasang biner hasil unduhan Firebase App Distribution.
+
+<p align="center">
+  <img src="docs/screenshots/device-home.png" width="260" alt="Beranda aplikasi beta">
+  <img src="docs/screenshots/device-feedback.png" width="260" alt="Tombol Kirim masukan ditekan">
+  <img src="docs/screenshots/device-telemetry.png" width="260" alt="Probe Crashlytics terkirim">
+</p>
+
+1. **Beranda** — daftar catatan, status sinkronisasi, dan tombol uji monitoring (hanya ada di build beta).
+2. **Kirim masukan** — snackbar `Masukan beta tercatat.` menandakan event `beta_feedback_sent` dikirim.
+3. **Probe Crashlytics** — snackbar `Probe Crashlytics terkirim.`; laporan non-fatal kemudian muncul di dashboard Crashlytics dengan issue `ca417bae60a4992ebabfd1cfc530011f`.
+
 ## Keputusan
 
 Beta internal **dilanjutkan**, perluasan produksi **ditahan** sampai AAB terdistribusi lewat Play Console, jumlah tester bertambah, dan event Analytics terverifikasi di dashboard GA4.

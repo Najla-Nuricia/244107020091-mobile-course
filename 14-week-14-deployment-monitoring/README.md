@@ -45,6 +45,12 @@ Screenshot diambil dari Infinix X6882 (Android 14) setelah memasang biner hasil 
 2. **Kirim masukan** — snackbar `Masukan beta tercatat.` menandakan event `beta_feedback_sent` dikirim.
 3. **Probe Crashlytics** — snackbar `Probe Crashlytics terkirim.`; laporan non-fatal kemudian muncul di dashboard Crashlytics dengan issue `ca417bae60a4992ebabfd1cfc530011f`.
 
+### Dashboard Analytics
+
+![Firebase Analytics Dashboard](docs/screenshots/dashboard.png)
+
+Dashboard Firebase Analytics menunjukkan **1 active user dalam 30 menit terakhir** dengan aktivitas dari Indonesia. Ini membuktikan data telemetry sampai ke layanan Analytics; verifikasi per-event `beta_feedback_sent` lewat GA4 API tetap memerlukan scope `analytics.readonly` seperti dijelaskan di laporan.
+
 ## Keputusan
 
 Beta internal **dilanjutkan**, perluasan produksi **ditahan** sampai AAB terdistribusi lewat Play Console, jumlah tester bertambah, dan event Analytics terverifikasi di dashboard GA4.
